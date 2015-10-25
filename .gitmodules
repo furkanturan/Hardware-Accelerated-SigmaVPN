@@ -1,3 +1,6 @@
 [submodule "CryptoCP"]
 	path = CryptoCP
 	url = https://github.com/furkanturan/CryptoCP.git
+[submodule "sigmavpn"]
+	path = sigmavpn
+	url = https://github.com/furkanturan/sigmavpn.git
