@@ -1,0 +1,3 @@
+[submodule "CryptoCP"]
+	path = CryptoCP
+	url = https://github.com/furkanturan/CryptoCP.git
