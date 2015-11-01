@@ -1,0 +1,10 @@
+#-----------------------------------------------------------
+# Vivado v2014.3.1 (64-bit)
+# SW Build 1056140 on Thu Oct 30 16:30:39 MDT 2014
+# IP Build 1028902 on Fri Sep 26 17:35:13 MDT 2014
+# Start of session at: Sun Nov  1 15:17:16 2015
+# Process ID: 12836
+# Log file: /home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.runs/impl_1/system_wrapper.vdi
+# Journal file: /home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source system_wrapper.tcl -notrace

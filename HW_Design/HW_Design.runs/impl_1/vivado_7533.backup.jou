@@ -1,0 +1,10 @@
+#-----------------------------------------------------------
+# Vivado v2014.3.1 (64-bit)
+# SW Build 1056140 on Thu Oct 30 16:30:39 MDT 2014
+# IP Build 1028902 on Fri Sep 26 17:35:13 MDT 2014
+# Start of session at: Sat Oct 17 11:28:56 2015
+# Process ID: 4786
+# Log file: /home/ft/Thesis/DMA/Zybo/zybo_base_system/source/vivado/hw/zybo_bsd/zybo_bsd.runs/impl_1/system_wrapper.vdi
+# Journal file: /home/ft/Thesis/DMA/Zybo/zybo_base_system/source/vivado/hw/zybo_bsd/zybo_bsd.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source system_wrapper.tcl -notrace

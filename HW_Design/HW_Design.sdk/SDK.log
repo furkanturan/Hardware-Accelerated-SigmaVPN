@@ -1,0 +1,5 @@
+15:19:56 INFO  : Processing command line option -hwspec /home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.sdk/system_wrapper.hdf.
+15:20:16 INFO  : Launching XSDB server: xsdb -s /opt/Xilinx/SDK/2014.3.1/scripts/xsdb/xsdb/xsdb-server.tcl 2450
+15:22:37 INFO  : Invoking Bootgen: bootgen -image output.bif -o /home/ft/Thesis/DMA/Zybo/BootFiles2/BOOT.bin -w on
+15:22:37 INFO  : Overwriting existing bif file /home/ft/Thesis/DMA/Zybo/BootFiles2/output.bif
+15:22:37 INFO  : Bootgen command execution is done.
