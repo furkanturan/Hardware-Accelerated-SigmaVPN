@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sun Nov  1 15:10:08 2015" VIVADOVERSION="2014.3.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Mon Nov  2 21:14:57 2015" VIVADOVERSION="2014.3.1">
 
   <SYSTEMINFO ARCH="zynq" DEVICE="7z010" NAME="system_imp" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -624,7 +624,11 @@
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" NAME="mm2s_introut" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT"/>
-        <PORT DIR="O" NAME="s2mm_introut" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT"/>
+        <PORT DIR="O" IRQID="61" NAME="s2mm_introut" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="axi_dma_0_s2mm_introut">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="ps7_scugic_0" PORT="IRQ_F2P"/>
+          </CONNECTIONS>
+        </PORT>
       </PORTS>
       <BUSINTERFACES>
         <BUSINTERFACE BUSNAME="processing_system7_0_axi_periph_m00_couplers_m00_regslice_M_AXI" NAME="S_AXI_LITE" TYPE="SLAVE">
@@ -11161,7 +11165,11 @@
             <CONNECTION INSTANCE="ps7_ethernet_0" PORT="IRQ_ENET_WAKE0"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" IRQID="61:62:63:64:65:66:67:68:84:85:86:87:88:89:90:91" NAME="IRQ_F2P" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT"/>
+        <PORT DIR="I" IRQID="61:62:63:64:65:66:67:68:84:85:86:87:88:89:90:91" NAME="IRQ_F2P" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="axi_dma_0_s2mm_introut">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dma_0" PORT="s2mm_introut"/>
+          </CONNECTIONS>
+        </PORT>
         <PORT DIR="I" IRQID="27" NAME="IRQ_GLOBALTIMER" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="ps7_globaltimer_0_IRQ_GLOBALTIMER">
           <CONNECTIONS>
             <CONNECTION INSTANCE="ps7_globaltimer_0" PORT="IRQ_GLOBALTIMER"/>

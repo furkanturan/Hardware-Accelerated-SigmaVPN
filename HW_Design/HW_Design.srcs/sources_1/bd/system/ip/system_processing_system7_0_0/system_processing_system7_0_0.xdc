@@ -17,8 +17,8 @@
 ############################################################################
 # Clock constraints                                                        #
 ############################################################################
-create_clock -name clk_fpga_0 -period "10" [get_pins "PS7_i/FCLKCLK[0]"]
-set_input_jitter clk_fpga_0 0.3
+create_clock -name clk_fpga_2 -period "81.538" [get_pins "PS7_i/FCLKCLK[2]"]
+set_input_jitter clk_fpga_2 2.44614
 #set_clock_groups -asynchronous#
 #This will override any set_max_delay constrain set between the clock domain. This can cause hardware failures.#
 #There is no way for the user to "undo" the set_clock_groups command of the IP besides disabling the entire file.#
@@ -27,8 +27,8 @@ set_input_jitter clk_fpga_1 0.19998
 #set_clock_groups -asynchronous#
 #This will override any set_max_delay constrain set between the clock domain. This can cause hardware failures.#
 #There is no way for the user to "undo" the set_clock_groups command of the IP besides disabling the entire file.#
-create_clock -name clk_fpga_2 -period "81.538" [get_pins "PS7_i/FCLKCLK[2]"]
-set_input_jitter clk_fpga_2 2.44614
+create_clock -name clk_fpga_0 -period "10" [get_pins "PS7_i/FCLKCLK[0]"]
+set_input_jitter clk_fpga_0 0.3
 #set_clock_groups -asynchronous#
 #This will override any set_max_delay constrain set between the clock domain. This can cause hardware failures.#
 #There is no way for the user to "undo" the set_clock_groups command of the IP besides disabling the entire file.#

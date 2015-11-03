@@ -55,9 +55,9 @@ Command: synth_design -top system_wrapper -part xc7z010clg400-1
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7z010'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z010'
-INFO: [Common 17-1223] The version limit for your license is '2015.09' and will expire in -32 days. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for any updates or new releases.
+INFO: [Common 17-1223] The version limit for your license is '2015.09' and will expire in -33 days. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for any updates or new releases.
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:15 ; elapsed = 00:00:17 . Memory (MB): peak = 938.137 ; gain = 190.180 ; free physical = 308 ; free virtual = 12395
+Starting RTL Elaboration : Time (s): cpu = 00:00:14 ; elapsed = 00:00:20 . Memory (MB): peak = 938.133 ; gain = 190.180 ; free physical = 2769 ; free virtual = 13996
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-638] synthesizing module 'system_wrapper' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system_wrapper.v:12]
 INFO: [Synth 8-638] synthesizing module 'IOBUF' [/opt/Xilinx/Vivado/2014.3.1/scripts/rt/data/unisim_comp.v:12928]
@@ -115,7 +115,7 @@ INFO: [Synth 8-638] synthesizing module 'CryptoCP_v1_0_Process__parameterized0' 
 INFO: [Synth 8-256] done synthesizing module 'CryptoCP_v1_0_Process__parameterized0' (5#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/fturan/CryptoCP_v1_0/eb19f491/hdl/CryptoCP_v1_0_Process.vhd:61]
 INFO: [Synth 8-256] done synthesizing module 'CryptoCP_v1_0__parameterized0' (6#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/fturan/CryptoCP_v1_0/eb19f491/hdl/CryptoCP_v1_0.vhd:64]
 INFO: [Synth 8-256] done synthesizing module 'system_CryptoCP_0_0' (7#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_CryptoCP_0_0/synth/system_CryptoCP_0_0.vhd:97]
-WARNING: [Synth 8-350] instance 'CryptoCP_0' of module 'system_CryptoCP_0_0' requires 36 connections, but only 35 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1671]
+WARNING: [Synth 8-350] instance 'CryptoCP_0' of module 'system_CryptoCP_0_0' requires 36 connections, but only 35 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1672]
 INFO: [Synth 8-638] synthesizing module 'GND' [/opt/Xilinx/Vivado/2014.3.1/scripts/rt/data/unisim_comp.v:3852]
 INFO: [Synth 8-256] done synthesizing module 'GND' (8#1) [/opt/Xilinx/Vivado/2014.3.1/scripts/rt/data/unisim_comp.v:3852]
 INFO: [Synth 8-638] synthesizing module 'VCC' [/opt/Xilinx/Vivado/2014.3.1/scripts/rt/data/unisim_comp.v:35476]
@@ -4820,8 +4820,8 @@ WARNING: [Synth 8-3848] Net s2mm_desc_info_in in module/entity axi_dma__paramete
 WARNING: [Synth 8-3848] Net m_axis_ftch2_desc_available in module/entity axi_dma__parameterized0 does not have driver. [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_dma_v7_1/2a047f91/hdl/src/vhdl/axi_dma.vhd:842]
 INFO: [Synth 8-256] done synthesizing module 'axi_dma__parameterized0' (90#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_dma_v7_1/2a047f91/hdl/src/vhdl/axi_dma.vhd:420]
 INFO: [Synth 8-256] done synthesizing module 'system_axi_dma_0_1' (91#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_axi_dma_0_1/synth/system_axi_dma_0_1.vhd:128]
-WARNING: [Synth 8-350] instance 'axi_dma_0' of module 'system_axi_dma_0_1' requires 64 connections, but only 58 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1711]
-INFO: [Synth 8-638] synthesizing module 'system_axi_interconnect_0_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2052]
+WARNING: [Synth 8-350] instance 'axi_dma_0' of module 'system_axi_dma_0_1' requires 64 connections, but only 59 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1712]
+INFO: [Synth 8-638] synthesizing module 'system_axi_interconnect_0_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2055]
 INFO: [Synth 8-638] synthesizing module 'm00_couplers_imp_LCIC31' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:12]
 INFO: [Synth 8-638] synthesizing module 'system_auto_pc_1' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_auto_pc_1/synth/system_auto_pc_1.v:57]
 INFO: [Synth 8-638] synthesizing module 'axi_protocol_converter_v2_1_axi_protocol_converter' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_protocol_converter_v2_1/0c6611e5/hdl/verilog/axi_protocol_converter_v2_1_axi_protocol_converter.v:62]
@@ -8001,13 +8001,13 @@ INFO: [Synth 8-256] done synthesizing module 'axi_crossbar_v2_1_decerr_slave' (1
 INFO: [Synth 8-256] done synthesizing module 'axi_crossbar_v2_1_crossbar' (130#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_crossbar_v2_1/358efec2/hdl/verilog/axi_crossbar_v2_1_crossbar.v:90]
 INFO: [Synth 8-256] done synthesizing module 'axi_crossbar_v2_1_axi_crossbar' (131#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_crossbar_v2_1/358efec2/hdl/verilog/axi_crossbar_v2_1_axi_crossbar.v:54]
 INFO: [Synth 8-256] done synthesizing module 'system_xbar_0' (132#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_xbar_0/synth/system_xbar_0.v:57]
-WARNING: [Synth 8-689] width (1) of port connection 's_axi_arready' does not match port width (2) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2641]
-WARNING: [Synth 8-689] width (64) of port connection 's_axi_rdata' does not match port width (128) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2658]
-WARNING: [Synth 8-689] width (1) of port connection 's_axi_rlast' does not match port width (2) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2659]
-WARNING: [Synth 8-689] width (2) of port connection 's_axi_rresp' does not match port width (4) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2661]
-WARNING: [Synth 8-689] width (1) of port connection 's_axi_rvalid' does not match port width (2) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2662]
-WARNING: [Synth 8-350] instance 'xbar' of module 'system_xbar_0' requires 78 connections, but only 76 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2591]
-INFO: [Synth 8-256] done synthesizing module 'system_axi_interconnect_0_0' (133#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2052]
+WARNING: [Synth 8-689] width (1) of port connection 's_axi_arready' does not match port width (2) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2644]
+WARNING: [Synth 8-689] width (64) of port connection 's_axi_rdata' does not match port width (128) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2661]
+WARNING: [Synth 8-689] width (1) of port connection 's_axi_rlast' does not match port width (2) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2662]
+WARNING: [Synth 8-689] width (2) of port connection 's_axi_rresp' does not match port width (4) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2664]
+WARNING: [Synth 8-689] width (1) of port connection 's_axi_rvalid' does not match port width (2) of module 'system_xbar_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2665]
+WARNING: [Synth 8-350] instance 'xbar' of module 'system_xbar_0' requires 78 connections, but only 76 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2594]
+INFO: [Synth 8-256] done synthesizing module 'system_axi_interconnect_0_0' (133#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2055]
 INFO: [Synth 8-638] synthesizing module 'system_ground_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_ground_0/sim/system_ground_0.v:56]
 INFO: [Synth 8-638] synthesizing module 'xlconstant' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/xlconstant_v1_1/36911fd5/xlconstant.v:23]
 	Parameter CONST_VAL bound to: 1'b0 
@@ -8072,7 +8072,7 @@ INFO: [Synth 8-256] done synthesizing module 'upcnt_n' (138#1) [/home/ft/Thesis/
 INFO: [Synth 8-256] done synthesizing module 'sequence' (139#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/proc_sys_reset_v5_0/7820e39a/hdl/src/vhdl/sequence.vhd:146]
 INFO: [Synth 8-256] done synthesizing module 'proc_sys_reset__parameterized0' (140#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/proc_sys_reset_v5_0/7820e39a/hdl/src/vhdl/proc_sys_reset.vhd:199]
 INFO: [Synth 8-256] done synthesizing module 'system_proc_sys_reset_0_0' (141#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_proc_sys_reset_0_0/synth/system_proc_sys_reset_0_0.vhd:74]
-WARNING: [Synth 8-350] instance 'proc_sys_reset_0' of module 'system_proc_sys_reset_0_0' requires 10 connections, but only 7 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1848]
+WARNING: [Synth 8-350] instance 'proc_sys_reset_0' of module 'system_proc_sys_reset_0_0' requires 10 connections, but only 7 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1850]
 INFO: [Synth 8-638] synthesizing module 'system_processing_system7_0_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/synth/system_processing_system7_0_0.v:57]
 INFO: [Synth 8-638] synthesizing module 'processing_system7_v5_5_processing_system7' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/hdl/verilog/processing_system7_v5_5_processing_system7.v:154]
 	Parameter C_USE_DEFAULT_ACP_USER_VAL bound to: 0 - type: integer 
@@ -8250,13 +8250,13 @@ WARNING: [Synth 8-3848] Net FTMD_TRACEIN_ATID_i in module/entity processing_syst
 WARNING: [Synth 8-3848] Net FTMD_TRACEIN_DATA_i in module/entity processing_system7_v5_5_processing_system7 does not have driver. [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/hdl/verilog/processing_system7_v5_5_processing_system7.v:1070]
 WARNING: [Synth 8-3848] Net FTMD_TRACEIN_VALID_i in module/entity processing_system7_v5_5_processing_system7 does not have driver. [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/hdl/verilog/processing_system7_v5_5_processing_system7.v:1071]
 INFO: [Synth 8-256] done synthesizing module 'processing_system7_v5_5_processing_system7' (145#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/hdl/verilog/processing_system7_v5_5_processing_system7.v:154]
-WARNING: [Synth 8-350] instance 'inst' of module 'processing_system7_v5_5_processing_system7' requires 685 connections, but only 672 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/synth/system_processing_system7_0_0.v:496]
+WARNING: [Synth 8-350] instance 'inst' of module 'processing_system7_v5_5_processing_system7' requires 685 connections, but only 672 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/synth/system_processing_system7_0_0.v:499]
 INFO: [Synth 8-256] done synthesizing module 'system_processing_system7_0_0' (146#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/synth/system_processing_system7_0_0.v:57]
-WARNING: [Synth 8-689] width (1) of port connection 'S_AXI_HP0_ARID' does not match port width (6) of module 'system_processing_system7_0_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1930]
-WARNING: [Synth 8-689] width (1) of port connection 'S_AXI_HP0_AWID' does not match port width (6) of module 'system_processing_system7_0_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1941]
-WARNING: [Synth 8-689] width (1) of port connection 'S_AXI_HP0_WID' does not match port width (6) of module 'system_processing_system7_0_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1961]
-WARNING: [Synth 8-350] instance 'processing_system7_0' of module 'system_processing_system7_0_0' requires 130 connections, but only 111 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1856]
-INFO: [Synth 8-638] synthesizing module 'system_processing_system7_0_axi_periph_2' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2670]
+WARNING: [Synth 8-689] width (1) of port connection 'S_AXI_HP0_ARID' does not match port width (6) of module 'system_processing_system7_0_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1933]
+WARNING: [Synth 8-689] width (1) of port connection 'S_AXI_HP0_AWID' does not match port width (6) of module 'system_processing_system7_0_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1944]
+WARNING: [Synth 8-689] width (1) of port connection 'S_AXI_HP0_WID' does not match port width (6) of module 'system_processing_system7_0_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1964]
+WARNING: [Synth 8-350] instance 'processing_system7_0' of module 'system_processing_system7_0_0' requires 131 connections, but only 112 given [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1858]
+INFO: [Synth 8-638] synthesizing module 'system_processing_system7_0_axi_periph_2' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2673]
 INFO: [Synth 8-638] synthesizing module 'm00_couplers_imp_WKXF3L' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:417]
 INFO: [Synth 8-638] synthesizing module 'system_m00_regslice_0' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_m00_regslice_0/synth/system_m00_regslice_0.v:57]
 INFO: [Synth 8-638] synthesizing module 'axi_register_slice_v2_1_axi_register_slice__parameterized3' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_register_slice_v2_1/d7ee63c6/hdl/verilog/axi_register_slice_v2_1_axi_register_slice.v:64]
@@ -9485,11 +9485,11 @@ INFO: [Synth 8-256] done synthesizing module 'axi_crossbar_v2_1_decerr_slave__pa
 INFO: [Synth 8-256] done synthesizing module 'axi_crossbar_v2_1_crossbar_sasd' (164#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_crossbar_v2_1/358efec2/hdl/verilog/axi_crossbar_v2_1_crossbar_sasd.v:79]
 INFO: [Synth 8-256] done synthesizing module 'axi_crossbar_v2_1_axi_crossbar__parameterized0' (164#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_crossbar_v2_1/358efec2/hdl/verilog/axi_crossbar_v2_1_axi_crossbar.v:54]
 INFO: [Synth 8-256] done synthesizing module 'system_xbar_1' (165#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_xbar_1/synth/system_xbar_1.v:57]
-INFO: [Synth 8-256] done synthesizing module 'system_processing_system7_0_axi_periph_2' (166#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2670]
+INFO: [Synth 8-256] done synthesizing module 'system_processing_system7_0_axi_periph_2' (166#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:2673]
 INFO: [Synth 8-256] done synthesizing module 'system' (167#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system.v:1426]
 INFO: [Synth 8-256] done synthesizing module 'system_wrapper' (168#1) [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/hdl/system_wrapper.v:12]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:05:20 ; elapsed = 00:05:23 . Memory (MB): peak = 1216.148 ; gain = 468.191 ; free physical = 148 ; free virtual = 12140
+Finished RTL Elaboration : Time (s): cpu = 00:04:55 ; elapsed = 00:05:03 . Memory (MB): peak = 1215.980 ; gain = 468.027 ; free physical = 1605 ; free virtual = 13322
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -9578,7 +9578,7 @@ INFO: [Synth 8-3295] tying undriven pin I_S2MM_DMA_MNGR:s2mm_desc_info_in[1] to 
 INFO: [Synth 8-3295] tying undriven pin I_S2MM_DMA_MNGR:s2mm_desc_info_in[0] to constant 0 [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_dma_v7_1/2a047f91/hdl/src/vhdl/axi_dma.vhd:1705]
 INFO: [Synth 8-3295] tying undriven pin I_S2MM_DMA_MNGR:m_axis_ftch2_desc_available to constant 0 [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_dma_v7_1/2a047f91/hdl/src/vhdl/axi_dma.vhd:1705]
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:05:21 ; elapsed = 00:05:25 . Memory (MB): peak = 1216.148 ; gain = 468.191 ; free physical = 149 ; free virtual = 12142
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:04:57 ; elapsed = 00:05:04 . Memory (MB): peak = 1215.980 ; gain = 468.027 ; free physical = 1603 ; free virtual = 13323
 ---------------------------------------------------------------------------------
 INFO: [Netlist 29-17] Analyzing 31 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
@@ -9622,16 +9622,16 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   IOBUF => IOBUF (IBUF, OBUFT): 2 instances
   SRL16 => SRL16E: 1 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1459.176 ; gain = 0.000 ; free physical = 131 ; free virtual = 12036
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1459.008 ; gain = 0.000 ; free physical = 1452 ; free virtual = 13230
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:05:37 ; elapsed = 00:05:41 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 152 ; free virtual = 12036
+Finished Constraint Validation : Time (s): cpu = 00:05:13 ; elapsed = 00:05:23 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1437 ; free virtual = 13218
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7z010clg400-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:05:37 ; elapsed = 00:05:41 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 151 ; free virtual = 12036
+Finished Loading Part and Timing Information : Time (s): cpu = 00:05:13 ; elapsed = 00:05:23 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1437 ; free virtual = 13218
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -9656,7 +9656,7 @@ Applied set_property DONT_TOUCH = true for system_i/axi_dma_0/U0. (constraint fi
 Applied set_property DONT_TOUCH = true for system_i/axi_interconnect_0/s00_couplers/auto_us/inst. (constraint file  /home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.runs/synth_1/dont_touch.xdc, line 83).
 Applied set_property DONT_TOUCH = true for system_i/axi_interconnect_0/s01_couplers/auto_us/inst. (constraint file  /home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.runs/synth_1/dont_touch.xdc, line 88).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:05:39 ; elapsed = 00:05:43 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 149 ; free virtual = 12035
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:05:15 ; elapsed = 00:05:25 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1440 ; free virtual = 13222
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'CryptoCP_v1_0_DMActrl__parameterized0'
 INFO: [Synth 8-4471] merging register 'GEN_SYNC_WRITE.rst_wvalid_re_reg' into 'GEN_SYNC_WRITE.bvalid_i_reg' [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_dma_v7_1/2a047f91/hdl/src/vhdl/axi_dma_lite_if.vhd:271]
@@ -9707,7 +9707,7 @@ WARNING: [Synth 8-3848] Net FTMD_TRACEIN_ATID_i in module/entity processing_syst
 WARNING: [Synth 8-3848] Net FTMD_TRACEIN_DATA_i in module/entity processing_system7_v5_5_processing_system7 does not have driver. [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/hdl/verilog/processing_system7_v5_5_processing_system7.v:1070]
 WARNING: [Synth 8-3848] Net FTMD_TRACEIN_VALID_i in module/entity processing_system7_v5_5_processing_system7 does not have driver. [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/hdl/verilog/processing_system7_v5_5_processing_system7.v:1071]
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:05:47 ; elapsed = 00:05:51 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 169 ; free virtual = 12059
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:05:23 ; elapsed = 00:05:33 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1411 ; free virtual = 13205
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -11414,7 +11414,7 @@ BRAMs: 120 (col length: RAMB18 40 RAMB36 20)
 ---------------------------------------------------------------------------------
 Finished Part Resource Summary
 ---------------------------------------------------------------------------------
-Start Parallel Synthesis Optimization  : Time (s): cpu = 00:05:47 ; elapsed = 00:05:51 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 167 ; free virtual = 12058
+Start Parallel Synthesis Optimization  : Time (s): cpu = 00:05:23 ; elapsed = 00:05:33 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1410 ; free virtual = 13205
 ---------------------------------------------------------------------------------
 Start Cross Boundary Optimization
 ---------------------------------------------------------------------------------
@@ -11444,9 +11444,9 @@ INFO: [Synth 8-3936] Found unconnected internal register 'inst/gen_axilite.gen_b
 INFO: [Synth 8-3936] Found unconnected internal register 'inst/gen_axilite.gen_b2s_conv.axilite_b2s/SI_REG/ar_pipe/m_payload_i_reg' and it is trimmed from '66' to '62' bits. [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_register_slice_v2_1/d7ee63c6/hdl/verilog/axi_register_slice_v2_1_axic_register_slice.v:121]
 INFO: [Synth 8-3936] Found unconnected internal register 'inst/gen_sasd.crossbar_sasd_0/reg_slice_r/m_payload_i_reg' and it is trimmed from '36' to '35' bits. [/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.srcs/sources_1/ipshared/xilinx.com/axi_register_slice_v2_1/d7ee63c6/hdl/verilog/axi_register_slice_v2_1_axic_register_slice.v:121]
 ---------------------------------------------------------------------------------
-Finished Cross Boundary Optimization : Time (s): cpu = 00:05:51 ; elapsed = 00:05:55 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 188 ; free virtual = 12077
+Finished Cross Boundary Optimization : Time (s): cpu = 00:05:26 ; elapsed = 00:05:37 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1380 ; free virtual = 13177
 ---------------------------------------------------------------------------------
-Finished Parallel Reinference  : Time (s): cpu = 00:05:51 ; elapsed = 00:05:55 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 188 ; free virtual = 12077
+Finished Parallel Reinference  : Time (s): cpu = 00:05:26 ; elapsed = 00:05:37 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1379 ; free virtual = 13177
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
@@ -11475,19 +11475,19 @@ Finished RAM, DSP and Shift Register Reporting
 Start Area Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Area Optimization : Time (s): cpu = 00:06:05 ; elapsed = 00:06:10 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 178 ; free virtual = 11995
+Finished Area Optimization : Time (s): cpu = 00:05:40 ; elapsed = 00:05:51 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1343 ; free virtual = 13155
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Area Optimization : Time (s): cpu = 00:06:05 ; elapsed = 00:06:10 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 178 ; free virtual = 11995
+Finished Area Optimization : Time (s): cpu = 00:05:40 ; elapsed = 00:05:51 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1343 ; free virtual = 13155
 ---------------------------------------------------------------------------------
-Finished Parallel Area Optimization  : Time (s): cpu = 00:06:05 ; elapsed = 00:06:10 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 178 ; free virtual = 11995
+Finished Parallel Area Optimization  : Time (s): cpu = 00:05:40 ; elapsed = 00:05:51 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1343 ; free virtual = 13155
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
 | |RTL Partition |Replication |Instances |
 +-+--------------+------------+----------+
 +-+--------------+------------+----------+
-Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:06:05 ; elapsed = 00:06:10 . Memory (MB): peak = 1459.176 ; gain = 711.219 ; free physical = 178 ; free virtual = 11995
+Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:05:40 ; elapsed = 00:05:51 . Memory (MB): peak = 1459.008 ; gain = 711.055 ; free physical = 1343 ; free virtual = 13155
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
@@ -11495,10 +11495,10 @@ Start Timing Optimization
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:06:19 ; elapsed = 00:06:24 . Memory (MB): peak = 1559.156 ; gain = 811.199 ; free physical = 154 ; free virtual = 11782
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:05:51 ; elapsed = 00:06:02 . Memory (MB): peak = 1559.988 ; gain = 812.035 ; free physical = 1144 ; free virtual = 12965
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:06:22 ; elapsed = 00:06:27 . Memory (MB): peak = 1579.164 ; gain = 831.207 ; free physical = 138 ; free virtual = 11770
+Finished Timing Optimization : Time (s): cpu = 00:05:53 ; elapsed = 00:06:05 . Memory (MB): peak = 1579.996 ; gain = 832.043 ; free physical = 1204 ; free virtual = 13026
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -11611,7 +11611,7 @@ INFO: [Synth 8-3332] Sequential element (\GEN_CMD_BTT_LESS_23.cmnd_data_reg[16] 
 INFO: [Synth 8-3332] Sequential element (\GEN_CMD_BTT_LESS_23.cmnd_data_reg[15] ) is unused and will be removed from module axi_dma_smple_sm__1.
 INFO: [Common 17-14] Message 'Synth 8-3332' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:06:33 ; elapsed = 00:06:38 . Memory (MB): peak = 1612.156 ; gain = 864.199 ; free physical = 144 ; free virtual = 11786
+Finished Technology Mapping : Time (s): cpu = 00:06:03 ; elapsed = 00:06:14 . Memory (MB): peak = 1611.988 ; gain = 864.035 ; free physical = 1177 ; free virtual = 12999
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -11677,7 +11677,7 @@ WARNING: [Synth 8-3295] tying undriven pin \I_S2MM_DMA_MNGR/GEN_S2MM_DMA_CONTROL
 WARNING: [Synth 8-3295] tying undriven pin \I_S2MM_DMA_MNGR/GEN_S2MM_DMA_CONTROL.I_S2MM_CMDSTS :m_axis_s2mm_sts_tdata[1] to constant 0
 WARNING: [Synth 8-3295] tying undriven pin \I_S2MM_DMA_MNGR/GEN_S2MM_DMA_CONTROL.I_S2MM_CMDSTS :m_axis_s2mm_sts_tdata[0] to constant 0
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:06:35 ; elapsed = 00:06:41 . Memory (MB): peak = 1614.570 ; gain = 866.613 ; free physical = 145 ; free virtual = 11787
+Finished IO Insertion : Time (s): cpu = 00:06:05 ; elapsed = 00:06:16 . Memory (MB): peak = 1614.402 ; gain = 866.449 ; free physical = 1175 ; free virtual = 12997
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -11690,7 +11690,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:06:35 ; elapsed = 00:06:41 . Memory (MB): peak = 1614.570 ; gain = 866.613 ; free physical = 145 ; free virtual = 11787
+Finished Renaming Generated Instances : Time (s): cpu = 00:06:05 ; elapsed = 00:06:17 . Memory (MB): peak = 1614.402 ; gain = 866.449 ; free physical = 1175 ; free virtual = 12997
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -11702,7 +11702,7 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:06:37 ; elapsed = 00:06:42 . Memory (MB): peak = 1614.570 ; gain = 866.613 ; free physical = 142 ; free virtual = 11787
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:06:07 ; elapsed = 00:06:18 . Memory (MB): peak = 1614.402 ; gain = 866.449 ; free physical = 1173 ; free virtual = 12995
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start RAM, DSP and Shift Register Reporting
@@ -12089,11 +12089,11 @@ Report Instance Areas:
 |310   |                bresp_fifo_0                                           |axi_protocol_converter_v2_1_b2s_simple_fifo__parameterized0        |     9|
 +------+-----------------------------------------------------------------------+-------------------------------------------------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:06:38 ; elapsed = 00:06:43 . Memory (MB): peak = 1614.570 ; gain = 866.613 ; free physical = 144 ; free virtual = 11786
+Finished Writing Synthesis Report : Time (s): cpu = 00:06:07 ; elapsed = 00:06:19 . Memory (MB): peak = 1614.402 ; gain = 866.449 ; free physical = 1173 ; free virtual = 12995
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 54 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:06:20 ; elapsed = 00:06:24 . Memory (MB): peak = 1614.570 ; gain = 492.402 ; free physical = 144 ; free virtual = 11787
-Synthesis Optimization Complete : Time (s): cpu = 00:06:38 ; elapsed = 00:06:44 . Memory (MB): peak = 1614.570 ; gain = 866.613 ; free physical = 144 ; free virtual = 11787
+Synthesis Optimization Runtime : Time (s): cpu = 00:05:49 ; elapsed = 00:05:56 . Memory (MB): peak = 1614.402 ; gain = 492.238 ; free physical = 1173 ; free virtual = 12995
+Synthesis Optimization Complete : Time (s): cpu = 00:06:07 ; elapsed = 00:06:19 . Memory (MB): peak = 1614.402 ; gain = 866.449 ; free physical = 1173 ; free virtual = 12995
 INFO: [Project 1-571] Translating synthesized netlist
 INFO: [Netlist 29-17] Analyzing 241 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
@@ -12120,8 +12120,8 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 INFO: [Common 17-83] Releasing license: Synthesis
 1039 Infos, 208 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:06:38 ; elapsed = 00:06:43 . Memory (MB): peak = 1634.570 ; gain = 755.434 ; free physical = 131 ; free virtual = 11767
+synth_design: Time (s): cpu = 00:06:08 ; elapsed = 00:06:19 . Memory (MB): peak = 1634.402 ; gain = 755.270 ; free physical = 1140 ; free virtual = 12965
 # write_checkpoint system_wrapper.dcp
 # catch { report_utilization -file system_wrapper_utilization_synth.rpt -pb system_wrapper_utilization_synth.pb }
-report_utilization: Time (s): cpu = 00:00:00.28 ; elapsed = 00:00:00.34 . Memory (MB): peak = 1634.574 ; gain = 0.000 ; free physical = 128 ; free virtual = 11765
-INFO: [Common 17-206] Exiting Vivado at Sun Nov  1 15:17:14 2015...
+report_utilization: Time (s): cpu = 00:00:00.29 ; elapsed = 00:00:00.36 . Memory (MB): peak = 1634.406 ; gain = 0.000 ; free physical = 1143 ; free virtual = 12969
+INFO: [Common 17-206] Exiting Vivado at Mon Nov  2 21:21:37 2015...

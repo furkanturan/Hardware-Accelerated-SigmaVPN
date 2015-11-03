@@ -1,7 +1,7 @@
 Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2014.3.1 (lin64) Build 1056140 Thu Oct 30 16:30:39 MDT 2014
-| Date             : Sun Nov  1 15:19:02 2015
+| Date             : Mon Nov  2 21:23:08 2015
 | Host             : debian running 64-bit Debian GNU/Linux 8.2 (jessie)
 | Command          : report_power -file system_wrapper_power_routed.rpt -pb system_wrapper_power_summary_routed.pb
 | Design           : system_wrapper
@@ -30,13 +30,13 @@ Table of Contents
 ----------
 
 +--------------------------+-------+
-| Total On-Chip Power (W)  | 1.521 |
-| Dynamic (W)              | 1.391 |
-| Device Static (W)        | 0.129 |
+| Total On-Chip Power (W)  | 1.522 |
+| Dynamic (W)              | 1.393 |
+| Device Static (W)        | 0.130 |
 | Total Off-Chip Power (W) | 0.121 |
 | Effective TJA (C/W)      | 11.5  |
-| Max Ambient (C)          | 67.5  |
-| Junction Temperature (C) | 42.5  |
+| Max Ambient (C)          | 67.4  |
+| Junction Temperature (C) | 42.6  |
 | Confidence Level         | Low   |
 | Setting File             | ---   |
 | Simulation Activity File | ---   |
@@ -50,21 +50,21 @@ Table of Contents
 +--------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
-| Clocks                   |     0.017 |        5 |       --- |             --- |
-| Slice Logic              |     0.008 |    11368 |       --- |             --- |
-|   LUT as Logic           |     0.008 |     3943 |     17600 |           22.40 |
-|   Register               |    <0.001 |     5878 |     35200 |           16.69 |
+| Clocks                   |     0.018 |        5 |       --- |             --- |
+| Slice Logic              |     0.009 |    11371 |       --- |             --- |
+|   LUT as Logic           |     0.008 |     3941 |     17600 |           22.39 |
+|   Register               |    <0.001 |     5879 |     35200 |           16.70 |
 |   CARRY4                 |    <0.001 |      107 |      4400 |            2.43 |
 |   LUT as Distributed RAM |    <0.001 |       22 |      6000 |            0.36 |
 |   F7/F8 Muxes            |    <0.001 |        3 |     17600 |            0.01 |
 |   LUT as Shift Register  |    <0.001 |      155 |      6000 |            2.58 |
 |   Others                 |     0.000 |      474 |       --- |             --- |
-| Signals                  |     0.010 |     8039 |       --- |             --- |
+| Signals                  |     0.010 |     8041 |       --- |             --- |
 | Block RAM                |     0.005 |        3 |        60 |            5.00 |
 | I/O                      |     0.002 |        2 |       100 |            2.00 |
 | PS7                      |     1.349 |        1 |       --- |             --- |
-| Static Power             |     0.129 |          |           |                 |
-| Total                    |     1.521 |          |           |                 |
+| Static Power             |     0.130 |          |           |                 |
+| Total                    |     1.522 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -74,7 +74,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.047 |       0.040 |      0.007 |
+| Vccint    |       1.000 |     0.048 |       0.041 |      0.007 |
 | Vccaux    |       1.800 |     0.012 |       0.000 |      0.012 |
 | Vcco33    |       3.300 |     0.002 |       0.001 |      0.001 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
@@ -150,16 +150,16 @@ Table of Contents
 +----------------------------------------------------------------------+-----------+
 | Name                                                                 | Power (W) |
 +----------------------------------------------------------------------+-----------+
-| system_wrapper                                                       |     1.391 |
+| system_wrapper                                                       |     1.393 |
 |   iic_0_scl_iobuf                                                    |     0.001 |
 |   iic_0_sda_iobuf                                                    |     0.001 |
-|   system_i                                                           |     1.389 |
-|     CryptoCP_0                                                       |     0.010 |
-|       U0                                                             |     0.010 |
-|         CryptoCP_v1_0_CPtoRAM_inst                                   |     0.006 |
+|   system_i                                                           |     1.390 |
+|     CryptoCP_0                                                       |     0.011 |
+|       U0                                                             |     0.011 |
+|         CryptoCP_v1_0_CPtoRAM_inst                                   |     0.007 |
 |         CryptoCP_v1_0_DMActrl_inst                                   |    <0.001 |
 |         CryptoCP_v1_0_Process_inst                                   |     0.002 |
-|         CryptoCP_v1_0_RAMtoCP_inst                                   |     0.001 |
+|         CryptoCP_v1_0_RAMtoCP_inst                                   |     0.002 |
 |     axi_dma_0                                                        |     0.014 |
 |       U0                                                             |     0.014 |
 |         I_AXI_DMA_REG_MODULE                                         |     0.001 |

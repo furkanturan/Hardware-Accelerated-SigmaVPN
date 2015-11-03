@@ -1,0 +1,6 @@
+the_ROM_image:
+{
+	[bootloader]/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.sdk/fsbl/Debug/fsbl.elf
+	/home/ft/Thesis/Hardware-Accelerated-SigmaVPN/HW_Design/HW_Design.runs/impl_1/system_wrapper.bit
+	/home/ft/Thesis/DMA/Zybo/BootFiles2/u-boot.elf
+}
