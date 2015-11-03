@@ -32,6 +32,7 @@
 #include <asm/io.h>
 #include <linux/pagemap.h>
 #include <linux/interrupt.h>
+#include <linux/limits.h>
 
 #define MM2S_DMA_CONTROL_REG		0x00
 #define MM2S_DMA_STATUS_REG			0x04
@@ -62,6 +63,7 @@ struct ds_axidma_device
 	struct cdev 		c_dev;
 	char 				*ds_axidma_addr;
 	dma_addr_t 			ds_axidma_handle;
+	int					irq;
 
 	struct list_head 	dev_list;
 };
@@ -123,25 +125,25 @@ static int my_strcmp(const char *str1, const char *str2)
   return (0);
 }
 
-static int dmaSynchMM2S(struct ds_axidma_device *obj_dev){
-	//	sleep(6);
-	//	return;
-
-	unsigned int mm2s_status = ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG);
-	while(!(mm2s_status & 1<<12) || !(mm2s_status & 1<<1) ){
-		mm2s_status = ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG);
-
-	}
-	return 0;
-}
-
-static int dmaSynchS2MM(struct ds_axidma_device *obj_dev){
-	unsigned int s2mm_status = ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
-	while(!(s2mm_status & 1<<12) || !(s2mm_status & 1<<1)){
-		s2mm_status = ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
-	}
-	return 0;
-}
+// static int dmaSynchMM2S(struct ds_axidma_device *obj_dev){
+// 	//	sleep(6);
+// 	//	return;
+//
+// 	unsigned int mm2s_status = ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG);
+// 	while(!(mm2s_status & 1<<12) || !(mm2s_status & 1<<1) ){
+// 		mm2s_status = ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG);
+//
+// 	}
+// 	return 0;
+// }
+//
+// static int dmaSynchS2MM(struct ds_axidma_device *obj_dev){
+// 	unsigned int s2mm_status = ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
+// 	while(!(s2mm_status & 1<<12) || !(s2mm_status & 1<<1)){
+// 		s2mm_status = ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
+// 	}
+// 	return 0;
+// }
 
 static int ds_axidma_open(struct inode *i, struct file *f)
 {
@@ -153,6 +155,12 @@ static int ds_axidma_open(struct inode *i, struct file *f)
 	}
 	request_mem_region(obj_dev->bus_addr, obj_dev->bus_size, MODULE_NAME);
 	obj_dev->virt_bus_addr = (char *) ioremap_nocache(obj_dev->bus_addr, obj_dev->bus_size);
+
+	iowrite32(4097, obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG);
+	iowrite32(4096, obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
+	iowrite32(1, obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG);
+	iowrite32(obj_dev->ds_axidma_handle, obj_dev->virt_bus_addr + MM2S_SOURCE_ADDRESS_REG);
+	iowrite32(obj_dev->ds_axidma_handle, obj_dev->virt_bus_addr + S2MM_DESTINATION_ADDRESS);
 
 	return 0;
 }
@@ -166,8 +174,7 @@ static int ds_axidma_close(struct inode *i, struct file *f)
 	return 0;
 }
 
-static ssize_t ds_axidma_read(struct file *f, char __user * buf, size_t
-			 len, loff_t * off)
+static ssize_t ds_axidma_read(struct file *f, char __user * buf, size_t len, loff_t * off)
 {
 	// /* printk(KERN_INFO "<%s> file: read()\n", MODULE_NAME); */
 	// struct ds_axidma_device *obj_dev;
@@ -183,38 +190,15 @@ static ssize_t ds_axidma_read(struct file *f, char __user * buf, size_t
 	// memcpy(buf, obj_dev->ds_axidma_addr, len);
 	// return len;
 
-	struct ds_axidma_device *obj_dev;
+	printk(KERN_INFO "This \"read\" method is not implemented!\n");
 
-	obj_dev = get_elem_from_list_by_inode(f->f_inode);
-
-
-
-	printk(KERN_INFO "0\n");
-
-	iowrite32(4097, obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG);
-
-	printk(KERN_INFO "1\n");
-
-	iowrite32(1, obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG);
-
-
-	printk(KERN_INFO "2\n");
-
-	iowrite32(obj_dev->ds_axidma_handle, obj_dev->virt_bus_addr + MM2S_SOURCE_ADDRESS_REG);
-
-	printk(KERN_INFO "3\n");
-
-	iowrite32(obj_dev->ds_axidma_handle, obj_dev->virt_bus_addr + S2MM_DESTINATION_ADDRESS);
-
-
-
-
-
-	return len;
+	return 0;
 }
 
-static ssize_t ds_axidma_write(struct file *f, char __user * buf,  size_t len, loff_t * off)
+static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t len, loff_t * off)
 {
+	unsigned int counter = 0;
+
 	struct ds_axidma_device *obj_dev;
 	if (len >= DMA_LENGTH)
 	{
@@ -224,64 +208,37 @@ static ssize_t ds_axidma_write(struct file *f, char __user * buf,  size_t len, l
 	obj_dev = get_elem_from_list_by_inode(f->f_inode);
 	memcpy(obj_dev->ds_axidma_addr, buf, len);
 
-	printk(KERN_INFO "MM2S_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG));
-	printk(KERN_INFO "MM2S_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG));
-	printk(KERN_INFO "S2MM_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG));
-	printk(KERN_INFO "S2MM_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG));
+	// printk(KERN_INFO "MM2S_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG));
+	// printk(KERN_INFO "MM2S_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG));
+	// printk(KERN_INFO "S2MM_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG));
+	// printk(KERN_INFO "S2MM_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG));
 
-
-	// printk(KERN_INFO "0\n");
-	//
-	// iowrite32(1, obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG);
-	//
-	// printk(KERN_INFO "1\n");
-	//
-	// iowrite32(1, obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG);
-	//
-	//
-	// printk(KERN_INFO "2\n");
-	//
-	// iowrite32(obj_dev->ds_axidma_handle, obj_dev->virt_bus_addr + MM2S_SOURCE_ADDRESS_REG);
-	//
-	// printk(KERN_INFO "3\n");
-	//
-	// iowrite32(obj_dev->ds_axidma_handle, obj_dev->virt_bus_addr + S2MM_DESTINATION_ADDRESS);
-
-	flag++;
-
-	printk(KERN_INFO "4\n");
+	flag = 1;
 
 	iowrite32(len, obj_dev->virt_bus_addr + MM2S_TRANSFER_LENGTH);
 
-
-
-	printk(KERN_INFO "5\n");
-
 	//dmaSynchS2MM(obj_dev);
-	//msleep(1000);
 
-	while(flag > 0){};
-	
-	printk(KERN_INFO "\nHURRAY\n");
+	while(flag > 0){
+		counter++;
 
-	printk(KERN_INFO "6\n");
+		if(counter == UINT_MAX){
+			printk(KERN_INFO "HW Interrupt didn't happen.\n");
 
-	memcpy(buf, obj_dev->ds_axidma_addr, len);
+			// I know I should return 0 here, but when I do,
+			// counter reaches to max value before interrupt occurs.
+			// Might it be some sort of good compiler optimization GCC does?
 
+			//return 0;
+		}
+	}
 
+	memcpy((char __user*)buf, obj_dev->ds_axidma_addr, len);
 
-	printk(KERN_INFO "7\n");
-
-	// dmaSynchMM2S(obj_dev);
-
-
-	printk(KERN_INFO "obj_dev->ds_axidma_addr: %X\n", obj_dev->ds_axidma_addr);
-
-	printk(KERN_INFO "MM2S_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG));
-	printk(KERN_INFO "MM2S_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG));
-	printk(KERN_INFO "S2MM_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG));
-	printk(KERN_INFO "S2MM_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG));
-
+	// printk(KERN_INFO "MM2S_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG));
+	// printk(KERN_INFO "MM2S_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG));
+	// printk(KERN_INFO "S2MM_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG));
+	// printk(KERN_INFO "S2MM_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG));
 
 	// printk(KERN_INFO "%X\n", bus_addr);
 	// printk(KERN_INFO "%lu\n", bus_size);
@@ -295,14 +252,13 @@ static struct file_operations fops = {
 	.release = ds_axidma_close,
 	.read = ds_axidma_read,
 	.write = ds_axidma_write,
-	//.write = ds_axidma_write,
 	/*.mmap = ds_axidma_mmap,*/
 	/* .unlocked_ioctl = ds_axidma_ioctl, */
 };
 
 static irqreturn_t timer_irq_handler(int irq, void *dev_id)
 {
-	printk(KERN_INFO "IRQ_HANDLED\n");
+	//printk(KERN_INFO "IRQ_HANDLED\n");
 
 	flag = 0;
 
@@ -311,7 +267,7 @@ static irqreturn_t timer_irq_handler(int irq, void *dev_id)
 
 static int ds_axidma_pdrv_probe(struct platform_device *pdev)
 {
-	int irq, returnVal;
+	int returnVal;
 
 	/* device constructor */
 	struct ds_axidma_device *obj_dev = (struct ds_axidma_device *)
@@ -343,24 +299,16 @@ static int ds_axidma_pdrv_probe(struct platform_device *pdev)
 
 	printk(KERN_INFO "DMA_LENGTH = %u \n", DMA_LENGTH);
 
-
 	/* Register the interrupt */
-	irq = platform_get_irq(pdev, 0);
+	obj_dev->irq = platform_get_irq(pdev, 0);
+	if (obj_dev->irq >= 0) {
+		returnVal = request_irq(obj_dev->irq, timer_irq_handler, IRQF_SHARED | IRQF_NO_SUSPEND, pdev->name, pdev);
 
-	printk(KERN_INFO "irq = %d \n", irq);
-
-	if (irq >= 0)
-	{
-		returnVal = request_irq(irq, timer_irq_handler, IRQF_SHARED | IRQF_NO_SUSPEND, pdev->name, pdev);
-
-		if (returnVal != 0)
-		{
-			//dev_info(&pdev->dev, "Interrupt Registered.\n");
-			printk(KERN_INFO "Interrupt NOT Registered \n");
+		if (returnVal != 0) {
+			dev_info(&pdev->dev, "Interrupt Could NOT Registered.\n");
 		}
-		else
-		{
-			printk(KERN_INFO "DMA Interrupt Registered \n");
+		else {
+			printk(KERN_INFO "Interrupt Registered.\n");
 		}
 	}
 
@@ -395,6 +343,9 @@ static int ds_axidma_pdrv_remove(struct platform_device *pdev)
 			if (obj_dev->ds_axidma_addr) {
 				dma_free_coherent(NULL, DMA_LENGTH, obj_dev->ds_axidma_addr, obj_dev->ds_axidma_handle);
 			}
+
+			free_irq(obj_dev->irq, pdev);
+
     		kfree(obj_dev);
     		break;
     	}
@@ -403,6 +354,9 @@ static int ds_axidma_pdrv_remove(struct platform_device *pdev)
   	{
   		class_destroy(cl);
   	}
+
+
+
 	printk(KERN_INFO "<%s> exit: unregistered\n", MODULE_NAME);
 	return 0;
 }
