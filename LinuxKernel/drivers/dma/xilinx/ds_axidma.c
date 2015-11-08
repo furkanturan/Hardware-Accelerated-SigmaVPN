@@ -69,6 +69,7 @@ struct ds_axidma_device
 };
 LIST_HEAD( full_dev_list );
 
+extern unsigned long volatile jiffies;
 
 char 				*ds_axidma_addr2;
 dma_addr_t 			ds_axidma_handle2;
@@ -136,14 +137,14 @@ static int my_strcmp(const char *str1, const char *str2)
 // 	}
 // 	return 0;
 // }
-//
-// static int dmaSynchS2MM(struct ds_axidma_device *obj_dev){
-// 	unsigned int s2mm_status = ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
-// 	while(!(s2mm_status & 1<<12) || !(s2mm_status & 1<<1)){
-// 		s2mm_status = ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
-// 	}
-// 	return 0;
-// }
+
+static int dmaSynchS2MM(struct ds_axidma_device *obj_dev){
+	unsigned int s2mm_status = ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
+	while(!(s2mm_status & 1<<12) || !(s2mm_status & 1<<1)){
+		s2mm_status = ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
+	}
+	return 0;
+}
 
 static int ds_axidma_open(struct inode *i, struct file *f)
 {
@@ -192,48 +193,140 @@ static ssize_t ds_axidma_read(struct file *f, char __user * buf, size_t len, lof
 
 	printk(KERN_INFO "This \"read\" method is not implemented!\n");
 
+	/* enable user-mode access to the performance counter*/
+	asm ("MCR p15, 0, %0, C9, C14, 0\n\t" :: "r"(1));
+	/* disable counter overflow interrupts (just in case)*/
+	asm ("MCR p15, 0, %0, C9, C14, 2\n\t" :: "r"(0x8000000f));
+
 	return 0;
+}
+
+static inline unsigned int get_cyclecount (void)
+{
+	unsigned int value;
+	// Read CCNT Register
+	asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(value));
+	return value;
+}
+
+static inline void init_perfcounters (int32_t do_reset, int32_t enable_divider)
+{
+  // in general enable all counters (including cycle counter)
+  int32_t value = 1;
+
+  // peform reset:
+  if (do_reset)
+  {
+    value |= 2;     // reset all counters to zero.
+    value |= 4;     // reset cycle counter to zero.
+  }
+
+  if (enable_divider)
+    value |= 8;     // enable "by 64" divider for CCNT.
+
+  value |= 16;
+
+  // program the performance-counter control-register:
+  asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"(value));
+
+  // enable all counters:
+  asm volatile ("MCR p15, 0, %0, c9, c12, 1\t\n" :: "r"(0x8000000f));
+
+  // clear overflows:
+  asm volatile ("MCR p15, 0, %0, c9, c12, 3\t\n" :: "r"(0x8000000f));
 }
 
 static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t len, loff_t * off)
 {
-	unsigned int counter = 0;
 
 	struct ds_axidma_device *obj_dev;
-	if (len >= DMA_LENGTH)
-	{
-		return 0;
-	}
+	unsigned int counter = 0;
+
+					// measure the counting overhead:
+					unsigned int overhead, i = 0;
+					unsigned int a, b, c, d, e, g;
+					unsigned int m1_avg, wr_avg, wt_avg, m2_avg;
+
+					init_perfcounters (1, 0);
+
+					// measure the counting overhead:
+					overhead = get_cyclecount();
+					overhead = get_cyclecount() - overhead;
+
+					m1_avg 	= 0;
+					wr_avg 	= 0;
+					wt_avg 	= 0;
+					m2_avg 	= 0;
+
+					for(i=0; i<512; i++)
+					{
+
+						init_perfcounters (1, 0);
+
+						a = get_cyclecount();
 
 	obj_dev = get_elem_from_list_by_inode(f->f_inode);
-	memcpy(obj_dev->ds_axidma_addr, buf, len);
-
-	// printk(KERN_INFO "MM2S_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG));
-	// printk(KERN_INFO "MM2S_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG));
-	// printk(KERN_INFO "S2MM_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG));
-	// printk(KERN_INFO "S2MM_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG));
 
 	flag = 1;
 
+						iowrite32(4096, obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
+						wmb();
+
+						b = get_cyclecount();
+
+	memcpy(obj_dev->ds_axidma_addr, buf, len);
+
+						c = get_cyclecount();
+
+
 	iowrite32(len, obj_dev->virt_bus_addr + MM2S_TRANSFER_LENGTH);
 
-	//dmaSynchS2MM(obj_dev);
 
-	while(flag > 0){
-		counter++;
+						d = get_cyclecount();
 
-		if(counter == UINT_MAX){
-			printk(KERN_INFO "HW Interrupt didn't happen.\n");
+	dmaSynchS2MM(obj_dev);
 
-			// I know I should return 0 here, but when I do,
-			// counter reaches to max value before interrupt occurs.
-			// Might it be some sort of good compiler optimization GCC does?
 
-			//return 0;
-		}
-	}
+	// while(flag > 0){
+	// 	counter++;
+	//
+	// 	if(counter == UINT_MAX){
+	// 		printk(KERN_INFO "HW Interrupt didn't happen.\n");
+	//
+	// 		// I know I should return 0 here, but when I do,
+	// 		// counter reaches to max value before interrupt occurs.
+	// 		// Might it be some sort of good compiler optimization GCC does?
+	//
+	// 		//return 0;
+	// 	}
+	// }
+
+						e = get_cyclecount();
 
 	memcpy((char __user*)buf, obj_dev->ds_axidma_addr, len);
+
+
+						g = get_cyclecount();
+
+						m1_avg 	+= c - b - overhead;
+						wr_avg 	+= d - c - overhead;
+						wt_avg 	+= e - d - overhead;
+						m2_avg 	+= g - e - overhead;
+					}
+
+					m1_avg /= 512;
+					wr_avg /= 512;
+					wt_avg /= 512;
+					m2_avg /= 512;
+
+					printk ("memcpy() %d cycles\n", m1_avg);
+					printk ("iowrite32() %d cycles\n", wr_avg);
+					printk ("waiting %d cycles\n", wt_avg);
+					printk ("memcpy() %d cycles\n", m2_avg);
+					printk ("total %d cycles\n", m1_avg + wr_avg + wt_avg + m2_avg);
+					printk ("total %d cycles\n", g-a);
+
+
 
 	// printk(KERN_INFO "MM2S_DMA_STATUS_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_STATUS_REG));
 	// printk(KERN_INFO "MM2S_DMA_CONTROL_REG: %X\n", ioread32(obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG));
@@ -302,7 +395,7 @@ static int ds_axidma_pdrv_probe(struct platform_device *pdev)
 	/* Register the interrupt */
 	obj_dev->irq = platform_get_irq(pdev, 0);
 	if (obj_dev->irq >= 0) {
-		returnVal = request_irq(obj_dev->irq, timer_irq_handler, IRQF_SHARED | IRQF_NO_SUSPEND, pdev->name, pdev);
+		returnVal = request_irq(obj_dev->irq, timer_irq_handler, 0, pdev->name, pdev);
 
 		if (returnVal != 0) {
 			dev_info(&pdev->dev, "Interrupt Could NOT Registered.\n");
@@ -408,3 +501,4 @@ module_platform_driver(ds_axidma_pdrv);
 MODULE_AUTHOR("Fabrizio Spada, Gianluca Durelli");
 MODULE_DESCRIPTION("AXI DMA driver");
 MODULE_LICENSE("GPL v2");
+
