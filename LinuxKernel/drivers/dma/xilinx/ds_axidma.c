@@ -242,51 +242,60 @@ static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t 
 	struct ds_axidma_device *obj_dev;
 	unsigned int counter = 0;
 
-					// measure the counting overhead:
-					unsigned int overhead, i = 0;
-					unsigned int a, b, c, d, e, g;
-					unsigned int m1_avg, wr_avg, wt_avg, m2_avg;
 
-					init_perfcounters (1, 0);
+			unsigned int overhead, i = 0;
+			unsigned int a, b, c, d, e, g;
+			unsigned int m1_avg, wr_avg, wt_avg, m2_avg;
 
-					// measure the counting overhead:
-					overhead = get_cyclecount();
-					overhead = get_cyclecount() - overhead;
+			// measure the counting overhead:
+			init_perfcounters (1, 0);
 
-					m1_avg 	= 0;
-					wr_avg 	= 0;
-					wt_avg 	= 0;
-					m2_avg 	= 0;
+			overhead = get_cyclecount();
+			overhead = get_cyclecount() - overhead;
 
-					for(i=0; i<512; i++)
-					{
+			m1_avg 	= 0;
+			wr_avg 	= 0;
+			wt_avg 	= 0;
+			m2_avg 	= 0;
 
-						init_perfcounters (1, 0);
+			// Execute code for 512 times, and average profilinf results
+			for(i=0; i<512; i++)
+			{
 
-						a = get_cyclecount();
+				// Reset counters at each loop
+				init_perfcounters (1, 0);
 
+				a = get_cyclecount();
+
+	// get the device of the driver file f 
 	obj_dev = get_elem_from_list_by_inode(f->f_inode);
 
+	// set interrupt flag, which will be reset by interrupt handler function
 	flag = 1;
+				// Reset interrupt flag, only necessary if interrupt is not used
+				iowrite32(4096, obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
+				wmb();
 
-						iowrite32(4096, obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
-						wmb();
+				b = get_cyclecount();
 
-						b = get_cyclecount();
-
+	// copy input buffer to coherent memory space
 	memcpy(obj_dev->ds_axidma_addr, buf, len);
 
-						c = get_cyclecount();
+				c = get_cyclecount();
 
-
+	// Write length of data trasnfer to initiate transfer
 	iowrite32(len, obj_dev->virt_bus_addr + MM2S_TRANSFER_LENGTH);
 
 
-						d = get_cyclecount();
+				d = get_cyclecount();
 
+	// poll for DMA transfer comlete
 	dmaSynchS2MM(obj_dev);
 
 
+	// // Wait for interrupt flag
+	// // When interrupt occur, flag will be zeroed the handler function
+	// // If counter exceeds UINT_MAX while waiting, don't wait anymore
 	// while(flag > 0){
 	// 	counter++;
 	//
@@ -301,30 +310,34 @@ static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t 
 	// 	}
 	// }
 
-						e = get_cyclecount();
+				e = get_cyclecount();
 
+	// copy received buffer at ciherent memory space back to input buffer
 	memcpy((char __user*)buf, obj_dev->ds_axidma_addr, len);
 
 
-						g = get_cyclecount();
+				g = get_cyclecount();
 
-						m1_avg 	+= c - b - overhead;
-						wr_avg 	+= d - c - overhead;
-						wt_avg 	+= e - d - overhead;
-						m2_avg 	+= g - e - overhead;
-					}
+				// acculmulate counters
+				m1_avg 	+= c - b - overhead;
+				wr_avg 	+= d - c - overhead;
+				wt_avg 	+= e - d - overhead;
+				m2_avg 	+= g - e - overhead;
+			}
 
-					m1_avg /= 512;
-					wr_avg /= 512;
-					wt_avg /= 512;
-					m2_avg /= 512;
+			// take average of counters
+			m1_avg /= 512;
+			wr_avg /= 512;
+			wt_avg /= 512;
+			m2_avg /= 512;
 
-					printk ("memcpy() %d cycles\n", m1_avg);
-					printk ("iowrite32() %d cycles\n", wr_avg);
-					printk ("waiting %d cycles\n", wt_avg);
-					printk ("memcpy() %d cycles\n", m2_avg);
-					printk ("total %d cycles\n", m1_avg + wr_avg + wt_avg + m2_avg);
-					printk ("total %d cycles\n", g-a);
+			// show counters
+			printk ("memcpy() %d cycles\n", m1_avg);
+			printk ("iowrite32() %d cycles\n", wr_avg);
+			printk ("waiting %d cycles\n", wt_avg);
+			printk ("memcpy() %d cycles\n", m2_avg);
+			printk ("total %d cycles\n", m1_avg + wr_avg + wt_avg + m2_avg);
+			printk ("total %d cycles\n", g-a);
 
 
 
