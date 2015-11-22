@@ -24,12 +24,10 @@ will be reduced to 10% as it is the case of `salsa20` function.
 
 ## Rough Gain Estimations for Different Length of Message Encryption
 
-| Message Len | # of calls  | Cycles (CPU) | Cycles (HW) | Reduce To |
-| (In Bytes)  | Salsa20/    |              |             | (as %)    |
-|             | Hsalsa20/   |              |             |           |
-|             | Poly1305    |              |             |           |
-| :---        | :---        | :---         | :---        | :---      |
-| 128         | 3/1/1       | 60000        | 13000       | 21        |
+
+| Message Len  (In Bytes)| # of calls Salsa20/Hsalsa20/Poly1305 | Cycles (CPU) | Cycles (HW) | Reduce To (%)|
+| :-----                 | :-----      | :-----       | :-----      | :-----      |
+| 128                    | 3/1/1       | 60000        | 13000       | 21        |
 | 256         | 5/1/1       | 80000        | 15000       | 18.7      |
 | 512         | 9/1/1       | 120000       | 19000       | 15.8      |
 | 1024        | 17/1/1      | 200000       | 27000       | 13.5      |
