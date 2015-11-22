@@ -75,15 +75,10 @@ printf "MAC = %h\n", MAC;
 // as it is discussed in the PDF.
 
 ACC := 0;
-
-ACC := (ACC + C1) mod (2^130-5);
-ACC := (ACC * R) mod (2^130-5);
-ACC := (ACC + C2) mod (2^130-5);
-ACC := (ACC * R) mod (2^130-5);
-ACC := (ACC + C3) mod (2^130-5);
-ACC := (ACC * R) mod (2^130-5);
-ACC := (ACC + C4) mod (2^130-5);
-ACC := (ACC * R) mod (2^130-5);
+ACC := ((ACC + C1) * R) mod (2^130-5);
+ACC := ((ACC + C2) * R) mod (2^130-5);
+ACC := ((ACC + C3) * R) mod (2^130-5);
+ACC := ((ACC + C4) * R) mod (2^130-5);
 
 ACC := (ACC + S) mod 2^128;
 
