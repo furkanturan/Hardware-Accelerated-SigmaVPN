@@ -1,0 +1,337 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ns/call  ns/call  name    
+ 23.17      6.29     6.29                             rotate
+ 23.09     12.56     6.27                             crypto_core_salsa20
+ 13.37     16.19     3.63                             crypto_stream_salsa20_xor_ic
+ 10.17     18.95     2.76                             poly1305_blocks
+  6.78     20.79     1.84                             rotate
+  6.56     22.57     1.78                             crypto_core_hsalsa20
+  4.49     23.79     1.22                             store_littleendian
+  3.57     24.76     0.97                             load_littleendian
+  3.13     25.61     0.85                             U8TO32
+  0.81     25.83     0.22                             load_littleendian
+  0.81     26.05     0.22                             store_littleendian
+  0.77     26.26     0.21                             crypto_stream_salsa20
+  0.48     26.39     0.13                             crypto_box_curve25519xsalsa20poly1305_keypair
+  0.41     26.50     0.11                             crypto_secretbox_xsalsa20poly1305_open
+  0.37     26.60     0.10                             poly1305_finish
+  0.29     26.68     0.08   100000   800.03   800.03  proto_decode
+  0.22     26.74     0.06                             crypto_secretbox_xsalsa20poly1305
+  0.22     26.80     0.06                             poly1305_init
+  0.18     26.85     0.05                             crypto_stream_xsalsa20_xor_ic
+  0.11     26.88     0.03                             _sodium_dummy_symbol_to_prevent_lto
+  0.11     26.91     0.03                             crypto_onetimeauth_poly1305_final
+  0.11     26.94     0.03                             crypto_verify_16
+  0.11     26.97     0.03                             poly1305_update
+  0.07     26.99     0.02                             U32TO8
+  0.07     27.01     0.02                             crypto_onetimeauth_poly1305_donna_verify
+  0.07     27.03     0.02                             crypto_scalarmult_curve25519_ref10_fe_mul
+  0.04     27.04     0.01   200000    50.00    50.00  u32_pack
+  0.04     27.05     0.01   100000   100.00   300.01  proto_encode
+  0.04     27.06     0.01   100000   100.00   200.01  taia_pack
+  0.04     27.07     0.01                             crypto_box_curve25519xsalsa20poly1305_afternm
+  0.04     27.08     0.01                             crypto_box_curve25519xsalsa20poly1305_open_afternm
+  0.04     27.09     0.01                             crypto_hash_sha512
+  0.04     27.10     0.01                             crypto_onetimeauth_poly1305
+  0.04     27.11     0.01                             crypto_onetimeauth_poly1305_donna
+  0.04     27.12     0.01                             crypto_scalarmult_curve25519_ref10_fe_sq
+  0.04     27.13     0.01                             crypto_stream_xsalsa20
+  0.04     27.14     0.01                             main
+  0.04     27.15     0.01                             sodium_memzero
+  0.00     27.15     0.00   100000     0.00     0.00  taia_now
+  0.00     27.15     0.00   100000     0.00     0.00  u64_pack
+  0.00     27.15     0.00        4     0.00     0.00  hex2bin
+  0.00     27.15     0.00        4     0.00     0.00  proto_set
+  0.00     27.15     0.00        2     0.00     0.00  proto_descriptor
+  0.00     27.15     0.00        2     0.00     0.00  proto_init
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2014 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.04% of 27.15 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     23.2    6.29    0.00                 rotate [1]
+-----------------------------------------------
+                                                 <spontaneous>
+[2]     23.1    6.27    0.00                 crypto_core_salsa20 [2]
+-----------------------------------------------
+                                                 <spontaneous>
+[3]     13.4    3.63    0.00                 crypto_stream_salsa20_xor_ic [3]
+-----------------------------------------------
+                                                 <spontaneous>
+[4]     10.2    2.76    0.00                 poly1305_blocks [4]
+-----------------------------------------------
+                                                 <spontaneous>
+[5]      6.8    1.84    0.00                 rotate [5]
+-----------------------------------------------
+                                                 <spontaneous>
+[6]      6.6    1.78    0.00                 crypto_core_hsalsa20 [6]
+-----------------------------------------------
+                                                 <spontaneous>
+[7]      4.5    1.22    0.00                 store_littleendian [7]
+-----------------------------------------------
+                                                 <spontaneous>
+[8]      3.6    0.97    0.00                 load_littleendian [8]
+-----------------------------------------------
+                                                 <spontaneous>
+[9]      3.1    0.85    0.00                 U8TO32 [9]
+-----------------------------------------------
+                                                 <spontaneous>
+[10]     0.8    0.22    0.00                 load_littleendian [10]
+-----------------------------------------------
+                                                 <spontaneous>
+[11]     0.8    0.22    0.00                 store_littleendian [11]
+-----------------------------------------------
+                                                 <spontaneous>
+[12]     0.8    0.21    0.00                 crypto_stream_salsa20 [12]
+-----------------------------------------------
+                                                 <spontaneous>
+[13]     0.5    0.13    0.00                 crypto_box_curve25519xsalsa20poly1305_keypair [13]
+-----------------------------------------------
+                                                 <spontaneous>
+[14]     0.4    0.01    0.11                 main [14]
+                0.08    0.00  100000/100000      proto_decode [17]
+                0.01    0.02  100000/100000      proto_encode [21]
+                0.00    0.00       4/4           proto_set [42]
+                0.00    0.00       2/2           proto_descriptor [43]
+                0.00    0.00       2/2           proto_init [44]
+-----------------------------------------------
+                                                 <spontaneous>
+[15]     0.4    0.11    0.00                 crypto_secretbox_xsalsa20poly1305_open [15]
+-----------------------------------------------
+                                                 <spontaneous>
+[16]     0.4    0.10    0.00                 poly1305_finish [16]
+-----------------------------------------------
+                0.08    0.00  100000/100000      main [14]
+[17]     0.3    0.08    0.00  100000         proto_decode [17]
+-----------------------------------------------
+                                                 <spontaneous>
+[18]     0.2    0.06    0.00                 crypto_secretbox_xsalsa20poly1305 [18]
+-----------------------------------------------
+                                                 <spontaneous>
+[19]     0.2    0.06    0.00                 poly1305_init [19]
+-----------------------------------------------
+                                                 <spontaneous>
+[20]     0.2    0.05    0.00                 crypto_stream_xsalsa20_xor_ic [20]
+-----------------------------------------------
+                0.01    0.02  100000/100000      main [14]
+[21]     0.1    0.01    0.02  100000         proto_encode [21]
+                0.01    0.01  100000/100000      taia_pack [26]
+                0.00    0.00  100000/100000      taia_now [39]
+-----------------------------------------------
+                                                 <spontaneous>
+[22]     0.1    0.03    0.00                 crypto_onetimeauth_poly1305_final [22]
+-----------------------------------------------
+                                                 <spontaneous>
+[23]     0.1    0.03    0.00                 crypto_verify_16 [23]
+-----------------------------------------------
+                                                 <spontaneous>
+[24]     0.1    0.03    0.00                 poly1305_update [24]
+-----------------------------------------------
+                                                 <spontaneous>
+[25]     0.1    0.03    0.00                 _sodium_dummy_symbol_to_prevent_lto [25]
+-----------------------------------------------
+                0.01    0.01  100000/100000      proto_encode [21]
+[26]     0.1    0.01    0.01  100000         taia_pack [26]
+                0.01    0.00  200000/200000      u32_pack [30]
+                0.00    0.00  100000/100000      u64_pack [40]
+-----------------------------------------------
+                                                 <spontaneous>
+[27]     0.1    0.02    0.00                 U32TO8 [27]
+-----------------------------------------------
+                                                 <spontaneous>
+[28]     0.1    0.02    0.00                 crypto_onetimeauth_poly1305_donna_verify [28]
+-----------------------------------------------
+                                                 <spontaneous>
+[29]     0.1    0.02    0.00                 crypto_scalarmult_curve25519_ref10_fe_mul [29]
+-----------------------------------------------
+                0.01    0.00  200000/200000      taia_pack [26]
+[30]     0.0    0.01    0.00  200000         u32_pack [30]
+-----------------------------------------------
+                                                 <spontaneous>
+[31]     0.0    0.01    0.00                 crypto_box_curve25519xsalsa20poly1305_afternm [31]
+-----------------------------------------------
+                                                 <spontaneous>
+[32]     0.0    0.01    0.00                 crypto_box_curve25519xsalsa20poly1305_open_afternm [32]
+-----------------------------------------------
+                                                 <spontaneous>
+[33]     0.0    0.01    0.00                 crypto_hash_sha512 [33]
+-----------------------------------------------
+                                                 <spontaneous>
+[34]     0.0    0.01    0.00                 crypto_onetimeauth_poly1305 [34]
+-----------------------------------------------
+                                                 <spontaneous>
+[35]     0.0    0.01    0.00                 crypto_onetimeauth_poly1305_donna [35]
+-----------------------------------------------
+                                                 <spontaneous>
+[36]     0.0    0.01    0.00                 crypto_scalarmult_curve25519_ref10_fe_sq [36]
+-----------------------------------------------
+                                                 <spontaneous>
+[37]     0.0    0.01    0.00                 crypto_stream_xsalsa20 [37]
+-----------------------------------------------
+                                                 <spontaneous>
+[38]     0.0    0.01    0.00                 sodium_memzero [38]
+-----------------------------------------------
+                0.00    0.00  100000/100000      proto_encode [21]
+[39]     0.0    0.00    0.00  100000         taia_now [39]
+-----------------------------------------------
+                0.00    0.00  100000/100000      taia_pack [26]
+[40]     0.0    0.00    0.00  100000         u64_pack [40]
+-----------------------------------------------
+                0.00    0.00       4/4           proto_set [42]
+[41]     0.0    0.00    0.00       4         hex2bin [41]
+-----------------------------------------------
+                0.00    0.00       4/4           main [14]
+[42]     0.0    0.00    0.00       4         proto_set [42]
+                0.00    0.00       4/4           hex2bin [41]
+-----------------------------------------------
+                0.00    0.00       2/2           main [14]
+[43]     0.0    0.00    0.00       2         proto_descriptor [43]
+-----------------------------------------------
+                0.00    0.00       2/2           main [14]
+[44]     0.0    0.00    0.00       2         proto_init [44]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2014 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [27] U32TO8 (poly1305_donna32.h) [18] crypto_secretbox_xsalsa20poly1305 [17] proto_decode
+   [9] U8TO32 (poly1305_donna32.h) [15] crypto_secretbox_xsalsa20poly1305_open [43] proto_descriptor
+  [25] _sodium_dummy_symbol_to_prevent_lto [12] crypto_stream_salsa20 [21] proto_encode
+  [31] crypto_box_curve25519xsalsa20poly1305_afternm [3] crypto_stream_salsa20_xor_ic [44] proto_init
+  [13] crypto_box_curve25519xsalsa20poly1305_keypair [37] crypto_stream_xsalsa20 [42] proto_set
+  [32] crypto_box_curve25519xsalsa20poly1305_open_afternm [20] crypto_stream_xsalsa20_xor_ic [5] rotate (core_hsalsa20.c)
+   [6] crypto_core_hsalsa20   [23] crypto_verify_16        [1] rotate (core_salsa20.c)
+   [2] crypto_core_salsa20    [41] hex2bin                [38] sodium_memzero
+  [33] crypto_hash_sha512     [10] load_littleendian (core_hsalsa20.c) [11] store_littleendian (core_hsalsa20.c)
+  [34] crypto_onetimeauth_poly1305 [8] load_littleendian (core_salsa20.c) [7] store_littleendian (core_salsa20.c)
+  [35] crypto_onetimeauth_poly1305_donna [14] main        [39] taia_now
+  [28] crypto_onetimeauth_poly1305_donna_verify [4] poly1305_blocks (poly1305_donna32.h) [26] taia_pack
+  [22] crypto_onetimeauth_poly1305_final [16] poly1305_finish (poly1305_donna32.h) [30] u32_pack
+  [29] crypto_scalarmult_curve25519_ref10_fe_mul [19] poly1305_init (poly1305_donna32.h) [40] u64_pack
+  [36] crypto_scalarmult_curve25519_ref10_fe_sq [24] poly1305_update (auth_poly1305_donna.c)
