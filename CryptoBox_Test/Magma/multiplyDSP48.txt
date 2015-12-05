@@ -1,0 +1,61 @@
+printf "\n Separate X into 25 bit words \n\n";
+
+x0 := (x          ) mod 2^25;    printf "x0 = %o\n", x0;
+x1 := (x div 2^25 ) mod 2^25;    printf "x1 = %o\n", x1;
+
+printf "x = %h\n", x0 + x1 * 2^25;
+
+printf "\n Separate R into 18 bit words \n\n";
+
+r0 := (r          ) mod 2^18;    printf "r0 = %h\n", r0;
+r1 := (r div 2^18 ) mod 2^18;    printf "r1 = %h\n", r1;
+
+printf "r = %h\n", r0 + r1 * 2^18;
+
+printf "\n Now start multiplication.\n";
+printf " Remember hand multiplication,\n";
+printf " there are several rows of output that are summed in the end.\n\n";
+printf " First output row is where X's words are multiplied with r0.\n";
+printf " Take care that each multiplication output will be in\n";
+printf " modulus 25, and higher bits will be considered as\n";
+printf " carry in to next word\n\n";
+
+m := 25;
+
+                        x1r0 := ( x1 * r0 );    x0r0 := ( x0 * r0 );
+
+c2 := 0;                c1 := x1r0;             c0 := x0r0;
+
+low := c0 mod 2^m;    high := c0 div 2^m;   c0 := low;    c1 := c1 + high;
+low := c1 mod 2^m;    high := c1 div 2^m;   c1 := low;    c2 := c2 + high;
+low := c2 mod 2^m;    high := c2 div 2^m;   c2 := low;
+
+row0 := c0 + c1 * 2^m + c2 * 2^(2*m) + high * 2^(3*m);
+
+printf "row0 = %h\n", row0;
+printf "row0 = %h\n", r0 * x;
+
+printf "\n Second output row is where X's words are multiplied with r1.\n\n";
+
+                        x1r1 := ( x1 * r1 );    x0r1 := ( x0 * r1 );
+
+c2 := 0;                c1 := x1r1;             c0 := x0r1;
+
+low := c0 mod 2^m;    high := c0 div 2^m;   c0 := low;    c1 := c1 + high;
+low := c1 mod 2^m;    high := c1 div 2^m;   c1 := low;    c2 := c2 + high;
+low := c2 mod 2^m;    high := c2 div 2^m;   c2 := low;
+
+row1 := c0 + c1 * 2^m + c2 * 2^(2*m) + high * 2^(3*m);
+
+printf "row1 = %h\n", row1;
+printf "row1 = %h\n", r1 * x;
+
+printf "\n Now calculate the end result by adding output rows.\n\n";
+printf " Take care shift in between them is 18 bits\n\n";
+
+m := 18;
+
+output := row0 + row1 * 2^m ;
+
+printf "output = %h\n", output;
+printf "output = %h\n", o;
