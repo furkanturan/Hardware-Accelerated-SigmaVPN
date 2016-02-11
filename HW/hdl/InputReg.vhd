@@ -211,7 +211,7 @@ begin
                     end if;
                     
                     if RDY = '1' then
-                        state <= s_read_init;
+                        state <= s_read_data;
                         tready <= '1';  
                     else
                         state <= s_wait_data;
