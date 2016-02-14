@@ -35,11 +35,9 @@ entity Poly1305_RS is
     Port ( 
         CLK     : in  STD_LOGIC;
         LOAD    : in  STD_LOGIC;
-        EorD    : in  STD_LOGIC;
     
-        ENC_IN   : in  STD_LOGIC_VECTOR(255 downto 0);
-        DEC_IN  : in  STD_LOGIC_VECTOR(255 downto 0); 
-                
+        CIPHER  : in  STD_LOGIC_VECTOR(255 downto 0);
+                         
         R_OUT   : out STD_LOGIC_VECTOR(127 downto 0);              
         S_OUT   : out STD_LOGIC_VECTOR(127 downto 0)
     );
@@ -59,28 +57,13 @@ begin
     begin
         if (CLK'event and CLK = '1') then   
             
-            if LOAD = '1' and EorD = '0' then
-                reg_S <=    ENC_IN(255 downto 128);
+            if LOAD = '1' then
+                reg_S <=    CIPHER(255 downto 128);
                 
-                reg_R <=    "0000" & ENC_IN(123 downto 98) & "00" & 
-                            "0000" & ENC_IN(91  downto 66) & "00" & 
-                            "0000" & ENC_IN(59  downto 34) & "00" & 
-                            "0000" & ENC_IN(27  downto 0);
-                
---                reg_S <=    ENC_IN(255 downto 128);
-                                            
---                reg_R <=    "0000" & ENC_IN(251 downto 226) & "00" & 
---                            "0000" & ENC_IN(219 downto 194) & "00" & 
---                            "0000" & ENC_IN(187 downto 162) & "00" & 
---                            "0000" & ENC_IN(157 downto 128);
-                            
-            elsif LOAD = '1' and EorD = '1' then     
-                reg_S <=    DEC_IN(255 downto 128);
-                            
-                reg_R <=    "0000" & DEC_IN(123 downto 98) & "00" & 
-                            "0000" & DEC_IN(91  downto 66) & "00" & 
-                            "0000" & DEC_IN(59  downto 34) & "00" & 
-                            "0000" & DEC_IN(27  downto 0);
+                reg_R <=    "0000" & CIPHER(123 downto 98) & "00" & 
+                            "0000" & CIPHER( 91 downto 66) & "00" & 
+                            "0000" & CIPHER( 59 downto 34) & "00" & 
+                            "0000" & CIPHER( 27 downto  0) ;
                                            
             else
                 reg_S <= reg_S;
