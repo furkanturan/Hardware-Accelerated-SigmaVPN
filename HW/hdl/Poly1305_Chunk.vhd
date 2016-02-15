@@ -198,7 +198,7 @@ begin
                         state <= s_mult;
                     end if;
                     
-                    sig_DONE <= '0';
+                    sig_DONE <= sig_DONE;
                     
                 when s_prop1 =>
                     
@@ -226,7 +226,7 @@ begin
                     
                     state <= s_prop3;
                     
-                    sig_DONE <= '0';
+                    sig_DONE <= sig_DONE;
                 
                  when s_prop2 =>
                                        
@@ -245,7 +245,7 @@ begin
                    
                    state <= s_prop3;
                    
-                   sig_DONE <= '0';
+                   sig_DONE <= sig_DONE;
                    
                 when s_prop3 =>
                 
@@ -267,7 +267,7 @@ begin
                         sig_DONE <= '1';
                     else
                         state <= s_prop2;
-                        sig_DONE <= '0';
+                        sig_DONE <= sig_DONE;
                     end if;                   
                    
                 when others =>

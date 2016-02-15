@@ -163,8 +163,6 @@ Initializes transfer.
 Don't have a done signal, but this one is good for that purpose, informs the 
 DMA that last block of data is on the line.
 
-## Poly1305_RS
-
 Just calculates R and S values for Poly1305 which are defined [here]
 (http://cr.yp.to/mac/poly1305-20050329.pdf)
 
@@ -172,30 +170,53 @@ Loads R and S values to internal register with active high insertion of INIT
 signal. Source of data is first ciphertext block at the output of the Salsa20
 function.
 
-## Poly1305_Chucks
+## Poly1305
 
+Poly1305 is defined [here](http://cr.yp.to/mac/poly1305-20050329.pdf)
 
-**R** - _input_ - 128 bits / 16 bytes / 4 int32
-
-Value calculated with Poly1305_RS.
-
-**ACC_in** - _input_ - 130 bits
-
-**ACC_out** - _output_ - 130 bits
-
-The MAC code is calculated with 16 byte chucks of the ciphertext, where
-block's output value is added with an accumulator value and their sum is 
-processed by Poly1305_Chucks function, and result is stored to accumulator
-again. So the function is:
+This function receives key to calculated R and S at first and stores them in
+dedicated registers. Then, The MAC code is calculated with 16 byte chucks of 
+the ciphertext, where block's output value is added with an accumulator value 
+and their sum is processed by Poly1305_Chucks function, and result is stored to
+accumulator again. So the function is:
 
     ACC := ((ACC + MESSAGE_CHUNK) * R) mod (2^130-5);
-    
+
+And finalization operation is:
+
+    ACC := (ACC + S) mod 2^128;
+
 **INIT** - _input_ - Active High
 
 Initializes calculation.    
 
+**KEY** - _input_ - 256 bits / 32 bytes / 4 int32  
+
+Key input from the first 32 byte of ciphertext.
+
+**LOAD_RS** - _input_ - Active High
+
+Together with the clock edge, Calculates R and S values from the KEY input, 
+and stores them into R and S registers inside.
+
+**MSG** - _input_ - 128 bits / 16 bytes / 4 int32  
+**MSG_LEN** - _input_ - 5 bits
+
+Message whose MAC will be calculated and its length. Since message is going to
+be processed with max 16 byte chunks, MLEN can go upto 16. In fact MLEN equals 
+to 0 is undefined for now. and it can be fixed if needed. This length 
+information is important when processing the final block of the ciphertext. 
+
+**LAST** - _input_ - Active High
+
+Informs the blocks that current chunk, is the last chunk, so it executes the
+final operation which is adding S to the accumulator. Should be asserted 
+together with the INIT signal.
 
 **DONE** - _output_ - Active High
 
-Assertes done signal when output is ready. Cleared by resetting or (re-)initing
-the operation.
+Asserted done pulse signal when output is ready. Cleared immediately after. 
+
+**MAC** - _output_ - 128 bits / 16 bytes / 4 int32
+
+ Calculated MAC.
