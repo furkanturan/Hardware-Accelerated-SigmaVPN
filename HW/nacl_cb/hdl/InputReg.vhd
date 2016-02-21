@@ -201,30 +201,39 @@ begin
                             
                             state <= s_read_init;
                             counter <= counter + 1;
+                                                        
+                            tdone <= '0';
                             
                         elsif counter = 6 and reg_CMD(0) = '1' then
                             param <= param_L1KEY;
                                                     
                             state <= s_read_init;
                             counter <= counter + 1;
+                                                        
+                            tdone <= '0';
                             
                         elsif counter = 6 and reg_CMD(0) = '0' then
                             param <= param;
                             
                             state <= s_read_data;
-                            counter <= 0;
+                            counter <= 8;
+                            
+                            tdone <= '1';
                         
                         elsif counter = 14 then
                             param <= param;
                             
                             state <= s_read_data;
-                            counter <= 0;
+                            counter <= 8;
                             
+                            tdone <= '1';
                         else
                             param <= param;
                                                         
                             state <= s_read_init;
                             counter <= counter + 1;
+                            
+                            tdone <= '0';
                         end if;
                         
                     end if;
@@ -233,11 +242,13 @@ begin
                     
                     if RDY = '1' then
                         state <= s_read_data;
-                        tready <= '1';  
+                        tready <= '1';
                     else
                         state <= s_wait_data;
                         tready <= '0';
                     end if;
+                    
+                    tdone <= tdone;
                     
                     param <= param;
                     
@@ -259,17 +270,18 @@ begin
                                 else
                                     tready <= '0';
                                     state <= s_wait_data;
-                                end if;                                
+                                    
+                                end if;   
+                                tdone <= '1';                             
                                 counter <= 0;
                             else
                                 tready <= '1';
                                 
                                 state <= s_read_data;
-                                counter <= counter + 1;
+                                counter <= counter + 1;                       
+                                tdone <= '0';
                             end if;
-                    
-                                            
-                            tdone <= '0';
+                                         
                         else          
                             tready <= '0';
                             tdone <= '1';

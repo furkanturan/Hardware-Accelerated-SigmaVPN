@@ -26,7 +26,7 @@ use ieee.std_logic_unsigned.all;
 entity Poly1305_Chunk is
     Port ( 
         CLK     : in  std_logic;        
-        RST     : in  std_logic;             
+        RSTN     : in  std_logic;             
         INIT    : in  std_logic;             
         DONE    : out std_logic;
                 
@@ -81,6 +81,7 @@ architecture Behavioral of Poly1305_Chunk is
         return ret;
     end function;
 
+    signal prop2_passed : std_logic := '0';
    
     signal result  : std_logic_vector(129 downto 0) := (others => '0');
     
@@ -130,7 +131,7 @@ begin
     begin
     if (CLK'event and CLK = '1') then
     
-        if RST = '1' then
+        if RSTN = '0' then
                         
             state <= s_reset;
             counter <= counter;
@@ -205,7 +206,7 @@ begin
                     -- Propagation state:
                     -- + This state and following 2 states are to perform higher-lower 13 bits additiions, 
                     --   and carry propagation of the multiplication results
-                    -- + It visits first s_prop1 state, for higher-lower 13 bits additiions
+                    -- + It visits fiRSTN s_prop1 state, for higher-lower 13 bits additiions
                     --   then s_prop3 state for carry propagations
                     --   then s_prop2 state for higher-lower 13 bits additiions again
                     --   then s_prop3 state again for carry propagations 
@@ -226,6 +227,8 @@ begin
                     
                     state <= s_prop3;
                     
+                    prop2_passed <= '0';
+                    
                     sig_DONE <= sig_DONE;
                 
                  when s_prop2 =>
@@ -240,12 +243,14 @@ begin
                     result7 <= result7 + H(5) (29 downto 26) ; 
                     result8 <= result8 + H(6) (29 downto 26) ; 
                     result9 <= result9 + H(7) (29 downto 26) ;
-                   
-                   counter <= counter;
-                   
-                   state <= s_prop3;
-                   
-                   sig_DONE <= sig_DONE;
+                    
+                    counter <= counter;
+                    
+                    state <= s_prop3;
+                    
+                    prop2_passed <= '1';
+                    
+                    sig_DONE <= sig_DONE;
                    
                 when s_prop3 =>
                 
@@ -262,14 +267,19 @@ begin
                     
                     counter <= counter;                    
                     
-                    if carry = "00000000000" then
-                        state <= s_reset;
-                        sig_DONE <= '1';
-                    else
+                    if carry /= "00000000000" then
+                        state <= s_prop3;
+                        sig_DONE <= sig_DONE;
+                        
+                    elsif prop2_passed = '0' then    
                         state <= s_prop2;
                         sig_DONE <= sig_DONE;
-                    end if;                   
-                   
+                        
+                    else
+                        state <= s_reset;
+                        sig_DONE <= '1';
+                    end if;   
+                    
                 when others =>
                     null;
             end case;            

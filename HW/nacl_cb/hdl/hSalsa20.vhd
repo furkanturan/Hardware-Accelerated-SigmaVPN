@@ -5,15 +5,6 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.all;
 use IEEE.std_logic_unsigned.all;
   
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
 entity hSalsa20 is
     Port ( 
         CLK     : in  STD_LOGIC;
@@ -37,12 +28,15 @@ architecture Behavioral of hSalsa20 is
     type array_x is array(0 to 15) of std_logic_vector(31 downto 0);
     signal x : array_x; 
     
-    signal counter_round    : std_logic_vector (7 downto 0);
-    signal counter_calc     : std_logic_vector (7 downto 0);
+    signal counter_round    : std_logic_vector(7 downto 0)   := (others => '0');
+    signal counter_calc     : std_logic_vector(7 downto 0)   := (others => '0');
         
-    signal data_out         : std_logic_vector(511 downto 0);
+    signal data_out         : std_logic_vector(511 downto 0) := (others => '0');
+    signal j                : std_logic_vector(511 downto 0) := (others => '0');
     
     signal sig_done         : std_logic := '0';
+    
+    signal reg_sel          : std_logic := '0';
 
 begin
 
@@ -57,16 +51,20 @@ begin
             case state is
                 when s_wait =>
                     if INIT = '1' then
-                        state <= s_init;
+                        state    <= s_init;
+                        
+                        reg_sel  <= SEL;                        
+                        sig_done <= '0';
                     else
-                        state <= s_wait;
+                        state    <= s_wait;
+                        
+                        reg_sel  <= reg_sel;
+                        sig_done <= sig_done;
                     end if;
                     
                     counter_round <= counter_round;             
                     counter_calc <= counter_calc;
-                    
-                    sig_done <= sig_done;
-                                        
+                                                            
                 when s_init =>
                     x(0)  <= x"61707865";
                     x(1)  <= KEY    (32 * 0 + 31 downto 32 * 0 + 0);
@@ -85,35 +83,36 @@ begin
                     x(14) <= KEY    (32 * 7 + 31 downto 32 * 7 + 0);
                     x(15) <= x"6b206574";
                     
-                    data_out(32 * 00 + 31 downto 32 * 00 + 0)  <= x"61707865";
-                    data_out(32 * 01 + 31 downto 32 * 01 + 0)  <= KEY    (32 * 0 + 31 downto 32 * 0 + 0);
-                    data_out(32 * 02 + 31 downto 32 * 02 + 0)  <= KEY    (32 * 1 + 31 downto 32 * 1 + 0);
-                    data_out(32 * 03 + 31 downto 32 * 03 + 0)  <= KEY    (32 * 2 + 31 downto 32 * 2 + 0);
-                    data_out(32 * 04 + 31 downto 32 * 04 + 0)  <= KEY    (32 * 3 + 31 downto 32 * 3 + 0);
-                    data_out(32 * 05 + 31 downto 32 * 05 + 0)  <= x"3320646e";
-                    data_out(32 * 06 + 31 downto 32 * 06 + 0)  <= D_IN  (32 * 0 + 31 downto 32 * 0 + 0);
-                    data_out(32 * 07 + 31 downto 32 * 07 + 0)  <= D_IN  (32 * 1 + 31 downto 32 * 1 + 0);
-                    data_out(32 * 08 + 31 downto 32 * 08 + 0)  <= D_IN  (32 * 2 + 31 downto 32 * 2 + 0);
-                    data_out(32 * 09 + 31 downto 32 * 09 + 0)  <= D_IN  (32 * 3 + 31 downto 32 * 3 + 0);
-                    data_out(32 * 10 + 31 downto 32 * 10 + 0)  <= x"79622d32";
-                    data_out(32 * 11 + 31 downto 32 * 11 + 0)  <= KEY    (32 * 4 + 31 downto 32 * 4 + 0);
-                    data_out(32 * 12 + 31 downto 32 * 12 + 0)  <= KEY    (32 * 5 + 31 downto 32 * 5 + 0);
-                    data_out(32 * 13 + 31 downto 32 * 13 + 0)  <= KEY    (32 * 6 + 31 downto 32 * 6 + 0);
-                    data_out(32 * 14 + 31 downto 32 * 14 + 0)  <= KEY    (32 * 7 + 31 downto 32 * 7 + 0);
-                    data_out(32 * 15 + 31 downto 32 * 15 + 0)  <= x"6b206574";
-                    
+                    j(32 * 00 + 31 downto 32 * 00 + 0)  <= x"61707865";
+                    j(32 * 01 + 31 downto 32 * 01 + 0)  <= KEY    (32 * 0 + 31 downto 32 * 0 + 0);
+                    j(32 * 02 + 31 downto 32 * 02 + 0)  <= KEY    (32 * 1 + 31 downto 32 * 1 + 0);
+                    j(32 * 03 + 31 downto 32 * 03 + 0)  <= KEY    (32 * 2 + 31 downto 32 * 2 + 0);
+                    j(32 * 04 + 31 downto 32 * 04 + 0)  <= KEY    (32 * 3 + 31 downto 32 * 3 + 0);
+                    j(32 * 05 + 31 downto 32 * 05 + 0)  <= x"3320646e";
+                    j(32 * 06 + 31 downto 32 * 06 + 0)  <= D_IN  (32 * 0 + 31 downto 32 * 0 + 0);
+                    j(32 * 07 + 31 downto 32 * 07 + 0)  <= D_IN  (32 * 1 + 31 downto 32 * 1 + 0);
+                    j(32 * 08 + 31 downto 32 * 08 + 0)  <= D_IN  (32 * 2 + 31 downto 32 * 2 + 0);
+                    j(32 * 09 + 31 downto 32 * 09 + 0)  <= D_IN  (32 * 3 + 31 downto 32 * 3 + 0);
+                    j(32 * 10 + 31 downto 32 * 10 + 0)  <= x"79622d32";
+                    j(32 * 11 + 31 downto 32 * 11 + 0)  <= KEY    (32 * 4 + 31 downto 32 * 4 + 0);
+                    j(32 * 12 + 31 downto 32 * 12 + 0)  <= KEY    (32 * 5 + 31 downto 32 * 5 + 0);
+                    j(32 * 13 + 31 downto 32 * 13 + 0)  <= KEY    (32 * 6 + 31 downto 32 * 6 + 0);
+                    j(32 * 14 + 31 downto 32 * 14 + 0)  <= KEY    (32 * 7 + 31 downto 32 * 7 + 0);
+                    j(32 * 15 + 31 downto 32 * 15 + 0)  <= x"6b206574";
+                                        
                     state <= s_work;
                     counter_round <= x"00";
                     counter_calc <= x"00";
                     
-                    sig_done <= '0';
+                    sig_done <= sig_done;
                     
                 when s_work =>
                 
                     counter_calc <= counter_calc + x"01";
+                    
                     if counter_calc = 7 then
                         if counter_round = 9 then
-                            if SEL = '1' then
+                            if reg_sel = '1' then
                                 state <= st_fin_salsa20;
                             else
                                 state <= st_fin_hsalsa20;
@@ -124,6 +123,8 @@ begin
                             counter_round <= counter_round + x"01";
                         end if;
                     end if;
+                                        
+                    reg_sel <= reg_sel;
                     
                     -- processing goes here
                     case counter_calc is
@@ -176,22 +177,22 @@ begin
                     end case;
                     
                 when st_fin_salsa20 =>
-                    data_out(32 * 00 + 31 downto 32 * 00 + 0)  <= data_out(32 * 00 + 31 downto 32 * 00 + 0) + x(00);
-                    data_out(32 * 01 + 31 downto 32 * 01 + 0)  <= data_out(32 * 01 + 31 downto 32 * 01 + 0) + x(01);
-                    data_out(32 * 02 + 31 downto 32 * 02 + 0)  <= data_out(32 * 02 + 31 downto 32 * 02 + 0) + x(02);
-                    data_out(32 * 03 + 31 downto 32 * 03 + 0)  <= data_out(32 * 03 + 31 downto 32 * 03 + 0) + x(03);
-                    data_out(32 * 04 + 31 downto 32 * 04 + 0)  <= data_out(32 * 04 + 31 downto 32 * 04 + 0) + x(04);
-                    data_out(32 * 05 + 31 downto 32 * 05 + 0)  <= data_out(32 * 05 + 31 downto 32 * 05 + 0) + x(05);
-                    data_out(32 * 06 + 31 downto 32 * 06 + 0)  <= data_out(32 * 06 + 31 downto 32 * 06 + 0) + x(06);
-                    data_out(32 * 07 + 31 downto 32 * 07 + 0)  <= data_out(32 * 07 + 31 downto 32 * 07 + 0) + x(07);
-                    data_out(32 * 08 + 31 downto 32 * 08 + 0)  <= data_out(32 * 08 + 31 downto 32 * 08 + 0) + x(08);
-                    data_out(32 * 09 + 31 downto 32 * 09 + 0)  <= data_out(32 * 09 + 31 downto 32 * 09 + 0) + x(09);
-                    data_out(32 * 10 + 31 downto 32 * 10 + 0)  <= data_out(32 * 10 + 31 downto 32 * 10 + 0) + x(10);
-                    data_out(32 * 11 + 31 downto 32 * 11 + 0)  <= data_out(32 * 11 + 31 downto 32 * 11 + 0) + x(11);
-                    data_out(32 * 12 + 31 downto 32 * 12 + 0)  <= data_out(32 * 12 + 31 downto 32 * 12 + 0) + x(12);
-                    data_out(32 * 13 + 31 downto 32 * 13 + 0)  <= data_out(32 * 13 + 31 downto 32 * 13 + 0) + x(13);
-                    data_out(32 * 14 + 31 downto 32 * 14 + 0)  <= data_out(32 * 14 + 31 downto 32 * 14 + 0) + x(14);
-                    data_out(32 * 15 + 31 downto 32 * 15 + 0)  <= data_out(32 * 15 + 31 downto 32 * 15 + 0) + x(15);
+                    data_out(32 * 00 + 31 downto 32 * 00 + 0)  <= j(32 * 00 + 31 downto 32 * 00 + 0) + x(00);
+                    data_out(32 * 01 + 31 downto 32 * 01 + 0)  <= j(32 * 01 + 31 downto 32 * 01 + 0) + x(01);
+                    data_out(32 * 02 + 31 downto 32 * 02 + 0)  <= j(32 * 02 + 31 downto 32 * 02 + 0) + x(02);
+                    data_out(32 * 03 + 31 downto 32 * 03 + 0)  <= j(32 * 03 + 31 downto 32 * 03 + 0) + x(03);
+                    data_out(32 * 04 + 31 downto 32 * 04 + 0)  <= j(32 * 04 + 31 downto 32 * 04 + 0) + x(04);
+                    data_out(32 * 05 + 31 downto 32 * 05 + 0)  <= j(32 * 05 + 31 downto 32 * 05 + 0) + x(05);
+                    data_out(32 * 06 + 31 downto 32 * 06 + 0)  <= j(32 * 06 + 31 downto 32 * 06 + 0) + x(06);
+                    data_out(32 * 07 + 31 downto 32 * 07 + 0)  <= j(32 * 07 + 31 downto 32 * 07 + 0) + x(07);
+                    data_out(32 * 08 + 31 downto 32 * 08 + 0)  <= j(32 * 08 + 31 downto 32 * 08 + 0) + x(08);
+                    data_out(32 * 09 + 31 downto 32 * 09 + 0)  <= j(32 * 09 + 31 downto 32 * 09 + 0) + x(09);
+                    data_out(32 * 10 + 31 downto 32 * 10 + 0)  <= j(32 * 10 + 31 downto 32 * 10 + 0) + x(10);
+                    data_out(32 * 11 + 31 downto 32 * 11 + 0)  <= j(32 * 11 + 31 downto 32 * 11 + 0) + x(11);
+                    data_out(32 * 12 + 31 downto 32 * 12 + 0)  <= j(32 * 12 + 31 downto 32 * 12 + 0) + x(12);
+                    data_out(32 * 13 + 31 downto 32 * 13 + 0)  <= j(32 * 13 + 31 downto 32 * 13 + 0) + x(13);
+                    data_out(32 * 14 + 31 downto 32 * 14 + 0)  <= j(32 * 14 + 31 downto 32 * 14 + 0) + x(14);
+                    data_out(32 * 15 + 31 downto 32 * 15 + 0)  <= j(32 * 15 + 31 downto 32 * 15 + 0) + x(15);
                     
                     state <= s_wait;
                   

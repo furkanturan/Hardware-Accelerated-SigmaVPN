@@ -1,43 +1,21 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 02/11/2016 08:20:11 PM
--- Design Name: 
--- Module Name: OutputDMA - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use ieee.std_logic_unsigned.all;
 use ieee.numeric_std.all;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity OutputDMA is
     port (
         INIT            : in  std_logic; 
         
-        D_IN            : in  std_logic_vector(511 downto 0);        
-            
+        D_IN            : in  std_logic_vector(511 downto 0);
+        
+        INX32_START     : in  std_logic_vector(3 downto 0);
+        INX32_STOP      : in  std_logic_vector(3 downto 0);
+        
+        LAST            : in  std_logic;
+        
+        DONE            : out std_logic;
+                    
         M_AXIS_ACLK     : in  std_logic;
         M_AXIS_ARESETN  : in  std_logic;
         
@@ -60,7 +38,7 @@ architecture Behavioral of OutputDMA is
 	-- Register to hold the current state
 	signal state       : state_type := s_wait_init;
 	
-	signal wordcounter : integer range 0 to 15 := 0;
+	signal wordcounter : std_logic_vector(3 downto 0) := (others => '0');
     
     signal tlast       : std_logic;
     signal tvalid      : std_logic;
@@ -69,20 +47,28 @@ architecture Behavioral of OutputDMA is
     
     signal index       : std_logic_vector(8 downto 0) := (others => '0'); 
     
+    signal reg_stop   : std_logic_vector(3 downto 0) := (others => '0');
+    signal reg_last   : std_logic_vector(3 downto 0) := (others => '0');
+    
+    signal sig_done     : std_logic := '0';
+    
 begin
 
-    index <= std_logic_vector(to_unsigned(wordcounter, 4)) & "00000";
+    index <= wordcounter & "00000";
     M_AXIS_TDATA    <= D_IN( to_integer(unsigned(index)) + 31 downto to_integer(unsigned(index)));
     
     M_AXIS_TVALID   <= tvalid;
     M_AXIS_TLAST    <= tlast;  
-        
+    
+    DONE <= sig_done;
+    
     process (M_AXIS_ACLK)
     begin
         if (M_AXIS_ACLK'event and M_AXIS_ACLK = '1') then
             
             if (M_AXIS_ARESETN = '0') then
                 state <= s_wait_init;
+                sig_done <= '0';
             else
                 
                 case state is
@@ -95,15 +81,21 @@ begin
                             tvalid <= '0';
                             tlast <= '0';
                             
+                            sig_done <= sig_done;
+                            
                         else
                             state <= s_write_data;
                                                     
-                            tvalid <= '0';
-                            tlast <= '0';
+                            tvalid <= '1';
+                            tlast <= '0';                              
+                            
+                            sig_done <= '0';
+                                
+                            wordcounter <= INX32_START;
+                            reg_stop    <= INX32_STOP;
+                            reg_last    <= INX32_STOP - '1';
                             
                         end if; 
-                        
-                        wordcounter <= 0;             
                                         
                     when s_write_data =>
                         
@@ -113,19 +105,25 @@ begin
                             wordcounter <= wordcounter + 1;                      
                         end if; 
                         
-                        if wordcounter = 15 then
+                        if wordcounter = reg_stop then
                             state <= s_wait_init;                            
-                            tvalid <= '0';   
+                            tvalid <= '0'; 
+                            
+                            sig_done <= '1';   
+                            
                         else
                             state <= s_write_data;                                                    
-                            tvalid <= '1';                            
+                            tvalid <= '1';  
+                            
+                            sig_done <= sig_done;                             
                         end if;
                         
-                        if wordcounter = 14 then                                          
-                            tlast <= '1';  
+                        if wordcounter = reg_last and LAST='1' then                                          
+                            tlast <= '1';
                         else
                             tlast <= '0';                             
-                        end if;                                           
+                        end if; 
+                                                               
                                      
                     when others =>
                         null;

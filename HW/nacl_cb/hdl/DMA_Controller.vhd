@@ -3,29 +3,27 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity DMA_Controller is
-    generic (
-	
-		C_M_START_DATA_VALUE	    : std_logic_vector	:= x"AA000000";
-		C_M_TARGET_SLAVE_BASE_ADDR	: std_logic_vector	:= x"40000000";
-		
-        C_M_AXI_ADDR_WIDTH          : integer	:= 32;
-        C_M_AXI_DATA_WIDTH	        : integer	:= 32;
-        C_M_TRANSACTIONS_NUM        : integer	:= 4
+    generic 
+    (
+            DMA_SLAVE_BASE_ADDR	 : std_logic_vector	:= x"40000000"
 	);
     port (
-            CONT_AXI_TXN : in std_logic;
-            INIT_AXI_TXN : in std_logic;
-            TXN_DONE    : out std_logic;
+            CLK     : in std_logic;
+            RSTN    : in std_logic;
             
-            -- AXI clock signal
-            M_AXI_ACLK    : in std_logic;
-            -- AXI active low reset signal
-            M_AXI_ARESETN    : in std_logic;
-            -- Master Interface Write Address Channel ports. Write address (issued by master)
-            M_AXI_AWADDR    : out std_logic_vector(C_M_AXI_ADDR_WIDTH-1 downto 0);
+            CONT    : in std_logic;
+            INIT    : in std_logic;
+            
+            TLEN    : in std_logic_vector(15 downto 0);
+            
+            DONE    : out std_logic;
+                        
+                        
+            
+            M_AXI_AWADDR    : out std_logic_vector(31 downto 0);
             -- Write channel Protection type.
-        -- This signal indicates the privilege and security level of the transaction,
-        -- and whether the transaction is a data access or an instruction access.
+            -- This signal indicates the privilege and security level of the transaction,
+            -- and whether the transaction is a data access or an instruction access.
             M_AXI_AWPROT    : out std_logic_vector(2 downto 0);
             -- Write address valid. 
         -- This signal indicates that the master signaling valid write address and control information.
@@ -34,11 +32,11 @@ entity DMA_Controller is
         -- This signal indicates that the slave is ready to accept an address and associated control signals.
             M_AXI_AWREADY    : in std_logic;
             -- Master Interface Write Data Channel ports. Write data (issued by master)
-            M_AXI_WDATA    : out std_logic_vector(C_M_AXI_DATA_WIDTH-1 downto 0);
+            M_AXI_WDATA    : out std_logic_vector(31 downto 0);
             -- Write strobes. 
         -- This signal indicates which byte lanes hold valid data.
         -- There is one write strobe bit for each eight bits of the write data bus.
-            M_AXI_WSTRB    : out std_logic_vector(C_M_AXI_DATA_WIDTH/8-1 downto 0);
+            M_AXI_WSTRB    : out std_logic_vector(3 downto 0);
             -- Write valid. This signal indicates that valid write data and strobes are available.
             M_AXI_WVALID    : out std_logic;
             -- Write ready. This signal indicates that the slave can accept the write data.
@@ -52,7 +50,7 @@ entity DMA_Controller is
             -- Response ready. This signal indicates that the master can accept a write response.
             M_AXI_BREADY    : out std_logic;
             -- Master Interface Read Address Channel ports. Read address (issued by master)
-            M_AXI_ARADDR    : out std_logic_vector(C_M_AXI_ADDR_WIDTH-1 downto 0);
+            M_AXI_ARADDR    : out std_logic_vector(31 downto 0);
             -- Protection type. 
         -- This signal indicates the privilege and security level of the transaction, 
         -- and whether the transaction is a data access or an instruction access.
@@ -64,7 +62,7 @@ entity DMA_Controller is
         -- This signal indicates that the slave is ready to accept an address and associated control signals.
             M_AXI_ARREADY    : in std_logic;
             -- Master Interface Read Data Channel ports. Read data (issued by slave)
-            M_AXI_RDATA    : in std_logic_vector(C_M_AXI_DATA_WIDTH-1 downto 0);
+            M_AXI_RDATA    : in std_logic_vector(31 downto 0);
             -- Read response. This signal indicates the status of the read transfer.
             M_AXI_RRESP    : in std_logic_vector(1 downto 0);
             -- Read valid. This signal indicates that the channel is signaling the required read data.
@@ -87,9 +85,9 @@ architecture Behavioral of DMA_Controller is
     signal arvalid : std_logic;
     signal rready : std_logic;
     signal bready : std_logic;
-    signal awaddr : std_logic_vector (C_M_AXI_ADDR_WIDTH-1 downto 0);
+    signal awaddr : std_logic_vector (31 downto 0);
     signal wdata : std_logic_vector (31 downto 0);
-    signal araddr : std_logic_vector (C_M_AXI_ADDR_WIDTH-1 downto 0);
+    signal araddr : std_logic_vector (31 downto 0);
     signal write_resp_error : std_logic;
     signal read_resp_error : std_logic;
         
@@ -109,14 +107,14 @@ architecture Behavioral of DMA_Controller is
     signal inited : std_logic; 
     signal conted : std_logic;   
 
-    signal DMABASEADDR : std_logic_vector(C_M_AXI_ADDR_WIDTH-1 downto 0);
+    signal DMABASEADDR : std_logic_vector(31 downto 0);
 
     type state_type is (s_0, s_1, s2, s3, s4, s5);
     signal state       : state_type := s_0;
 
 begin
 
-    DMABASEADDR <= C_M_TARGET_SLAVE_BASE_ADDR;
+    DMABASEADDR <= DMA_SLAVE_BASE_ADDR;
     
     -------------------- 
     -- Write Address (AW)
@@ -153,7 +151,7 @@ begin
     M_AXI_RREADY <= '0';
 
     
-    TXN_DONE <= done_success_int;
+    DONE <= done_success_int;
     
     ---------------------------------------------
     -- DESIGN STARTS HERE
@@ -165,29 +163,29 @@ begin
     -- transfer doesn't start
     -- CONT signal finilizes starts the transfer
         
-    process (M_AXI_ACLK)
+    process (CLK)
     begin
-        if M_AXI_ACLK'event and M_AXI_ACLK = '1' then
-            if (M_AXI_ARESETN = '0') then
+        if CLK'event and CLK = '1' then
+            if (RSTN = '0') then
                 inited <= '0';
                 conted <= '0';
             else
-                inited <= (inited or INIT_AXI_TXN) and (not done_success_int);
-                conted <= (conted or CONT_AXI_TXN) and (not done_success_int);
+                inited <= (inited or INIT) and (not done_success_int);
+                conted <= (conted or CONT) and (not done_success_int);
             end if;
         end if;
     end process;
 
     --Write Address Channel
     
-    process (M_AXI_ACLK)
+    process (CLK)
     begin
     
-        if (M_AXI_ACLK'event and M_AXI_ACLK = '1') then
+        if (CLK'event and CLK = '1') then
         
             -- Only VALID signals must be deasserted during reset per AXI spec
             -- Consider inverting then registering active-low reset for higher fmax
-            if M_AXI_ARESETN = '0' or inited = '0' then
+            if RSTN = '0' or inited = '0' then
                 awvalid <= '0';
             
             -- Address accepted by interconnect/slave
@@ -208,11 +206,11 @@ begin
     
     -- Write Data Channel
     
-    process (M_AXI_ACLK)
+    process (CLK)
     begin
-        if (M_AXI_ACLK'event and M_AXI_ACLK = '1') then
+        if (CLK'event and CLK = '1') then
         
-            if M_AXI_ARESETN = '0' or inited = '0' then
+            if RSTN = '0' or inited = '0' then
                 wvalid <= '0';
             
             --Data accepted by interconnect/slave
@@ -234,11 +232,11 @@ begin
     -- Write Response (B) Channel
        
     -- Always accept write responses
-    process (M_AXI_ACLK)
+    process (CLK)
     begin
-        if (M_AXI_ACLK'event and M_AXI_ACLK = '1') then
+        if (CLK'event and CLK = '1') then
         
-            if M_AXI_ARESETN = '0' or inited = '0' then
+            if RSTN = '0' or inited = '0' then
                 bready <= '0';
             else
                 bready <= '1';
@@ -263,11 +261,11 @@ begin
                 
             when "000001" =>
                 awaddr <= DMABASEADDR(31 downto 8) & x"34";
-                wdata <= x"00001000";
+                wdata <= x"00000001";
             
             when "000010" =>
                 awaddr <= DMABASEADDR(31 downto 8) & x"58";
-                wdata <= x"00000040";                        
+                wdata <= x"0000" & TLEN;                        
             
             when others =>
                 awaddr <= x"00000000";
@@ -278,11 +276,11 @@ begin
     
     -- Main write controller    
     
-    process (M_AXI_ACLK)
+    process (CLK)
     begin
-        if (M_AXI_ACLK'event and M_AXI_ACLK = '1') then
+        if (CLK'event and CLK = '1') then
             
-            if (M_AXI_ARESETN = '0') then
+            if (RSTN = '0') then
                 state <= s_0;
             else
             
@@ -290,7 +288,7 @@ begin
                     
                     -- Wait for initialization
                     when s_0 =>
-                        if INIT_AXI_TXN = '1' then
+                        if INIT = '1' then
                             state <= s_1;
                         else
                             state <= s_0;
@@ -307,7 +305,7 @@ begin
                     when s2 =>
                     
                         -- if write response received and all data (until CONT) is written knowing that CONT signal is asserted
-                        if M_AXI_BVALID = '1' and write_index = C_NUM_COMMANDS and (conted = '1' or CONT_AXI_TXN ='1') then
+                        if M_AXI_BVALID = '1' and write_index = C_NUM_COMMANDS and (conted = '1' or CONT ='1') then
                             state <= s4;
                          
                         -- if write response received and all data (until CONT) is written
@@ -328,7 +326,7 @@ begin
                         
                     when s3 =>
                         -- Wait till CONT signal
-                        if CONT_AXI_TXN = '1' then
+                        if CONT = '1' then
                             state <= s4;
                         else
                             state <= s3;
