@@ -50,7 +50,7 @@ architecture Behavioral of Poly1305 is
     end component Poly1305_RS;
     
     
-    type state_type is (s_reset, s_init, s_checkoverflow, s_busy);
+    type state_type is (s_reset, s_idle, s_init, s_checkoverflow, s_busy);
     signal state   : state_type;
 
     signal C        : std_logic_vector(128 downto 0) := (others => '0');
@@ -108,13 +108,22 @@ begin
             case state is
             
                 when s_reset =>
+                
+                    state <= s_idle;
+                    
+                    reg_ACC     <= (others => '0');
+                    
+                    sig_DONE <= '0';
+                    ch_init  <= '0';
+            
+                when s_idle =>
                            
                     if INIT = '1' then
                         state <= s_init;
                         sig_LAST <= LAST;
                         sig_DONE <= '0';
                     else
-                        state <= s_reset;
+                        state <= s_idle;
                         sig_DONE <= sig_DONE;
                     end if;
                     
@@ -162,7 +171,7 @@ begin
                             reg_ACC <= '0' & (sig_newACC + S);
                         end if;
                         
-                        state <= s_reset;
+                        state <= s_idle;
                         
                         sig_DONE <= '1';   
                      

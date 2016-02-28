@@ -193,7 +193,7 @@ begin
                         elsif param = param_nonce then
                             reg_NONCE(counter-1)    <= S_AXIS_TDATA;
                         elsif param = param_L1KEY then
-                            reg_L1KEY(counter-7)  <= S_AXIS_TDATA;
+                            reg_L1KEY(counter-7)    <= S_AXIS_TDATA;
                         end if;
                         
                         if counter = 0 then

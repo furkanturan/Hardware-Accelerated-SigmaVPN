@@ -1,0 +1,21 @@
+Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2014.3.1 (lin64) Build 1056140 Thu Oct 30 16:30:39 MDT 2014
+| Date         : Tue Aug 25 15:25:51 2015
+| Host         : debian running 64-bit Debian GNU/Linux 8.1 (jessie)
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+--------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_ground_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of system_ground_0 from xilinx.com:ip:xlconstant:1.0 to xilinx.com:ip:xlconstant:1.1 (Rev. 1)
+
+2. Upgrade messages
+-------------------
+
+Renamed port const to dout
+

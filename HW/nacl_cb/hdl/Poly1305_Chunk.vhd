@@ -49,37 +49,12 @@ architecture Behavioral of Poly1305_Chunk is
 
     signal sig_DONE : std_logic := '0';
 
-    type array_H is array (0 to 9) of std_logic_vector(29 downto 0);
+    type array_H is array (0 to 9) of std_logic_vector(30 downto 0);
     signal H : array_H := ((others => (others=>'0')));
-
-
 
     type array_accin5 is array (0 to 9) of std_logic_vector(15 downto 0);
     signal accin5 : array_accin5 := ((others => (others=>'0')));
 
-    function compute_accin5 (x: std_logic_vector) return array_accin5 is
-        variable ret : array_accin5;
-    begin
-        for i in 0 to 9 loop
-            ret(i) := ('0' & x(13*i+12 downto 13*i) & "00") + ("000" & x(13*i+12 downto 13*i));
-        end loop;
-        return ret;
-    end function;
-           
-    
-    function multiply_with_R (x130, r130: std_logic_vector; x5: array_accin5; c: integer; HH: array_H) return array_H is
-        variable ret : array_H;
-    begin
-        for i in 0 to 9 loop
-            
-            if i >= c then
-                ret(i) := HH(i) + ( "00" & ( unsigned( x130(13*c+12 downto 13*c) ) * unsigned( r130(13*(i-c)+12 downto 13*(i-c)) ) ) );
-            else
-                ret(i) := HH(i) + ( unsigned( x5( c ) ) * unsigned( r130(13*(10-c+i)+12 downto 13*(10-c+i)) ) );
-            end if;
-        end loop;                
-        return ret;
-    end function;
 
     signal prop2_passed : std_logic := '0';
    
@@ -161,7 +136,18 @@ begin
                 
                     H <= ((others => (others=>'0')));
                 
-                    accin5 <= compute_accin5(ACC_in);                    
+                    -- accin5 <= compute_accin5(ACC_in);                    
+                    
+                    accin5(0) <= ('0' & ACC_in( 12 downto   0) & "00") + ( ACC_in( 12 downto   0));
+                    accin5(1) <= ('0' & ACC_in( 25 downto  13) & "00") + ( ACC_in( 25 downto  13));
+                    accin5(2) <= ('0' & ACC_in( 38 downto  26) & "00") + ( ACC_in( 38 downto  26));
+                    accin5(3) <= ('0' & ACC_in( 51 downto  39) & "00") + ( ACC_in( 51 downto  39));
+                    accin5(4) <= ('0' & ACC_in( 64 downto  52) & "00") + ( ACC_in( 64 downto  52));
+                    accin5(5) <= ('0' & ACC_in( 77 downto  65) & "00") + ( ACC_in( 77 downto  65));
+                    accin5(6) <= ('0' & ACC_in( 90 downto  78) & "00") + ( ACC_in( 90 downto  78));
+                    accin5(7) <= ('0' & ACC_in(103 downto  91) & "00") + ( ACC_in(103 downto  91));
+                    accin5(8) <= ('0' & ACC_in(116 downto 104) & "00") + ( ACC_in(116 downto 104));
+                    accin5(9) <= ('0' & ACC_in(129 downto 117) & "00") + ( ACC_in(129 downto 117));
                     
                     counter <= 0;
                 
@@ -189,7 +175,140 @@ begin
                     -- h[9] := (x[1] * r[9]  +      x[2] * r[8]   +      x[3] * r[7]  +      x[4] * r[6]  +      x[5] * r[5]  +      x[6] * r[4]   +      x[7] * r[3]   +      x[8] * r[2]   +      x[9] * r[1]   +  5 * x[10] * r[10] ) ;
                     -- h[10]:= (x[1] * r[10] +      x[2] * r[9]   +      x[3] * r[8]  +      x[4] * r[7]  +      x[5] * r[6]  +      x[6] * r[5]   +      x[7] * r[4]   +      x[8] * r[3]   +      x[9] * r[2]   +      x[10] * r[1]  ) ;
 
-                    H <= multiply_with_R(ACC_in, R_130, accin5, counter, H);
+                    -- H <= multiply_with_R(ACC_in, R_130, accin5, counter, H);
+                    
+                    if counter = 0 then
+                    
+                        H(0) <= H(0) + ( ACC_in( 12 downto   0) ) * R_130( 12 downto   0) ;
+                        H(1) <= H(1) + ( ACC_in( 25 downto  13) ) * R_130( 12 downto   0) ;
+                        H(2) <= H(2) + ( ACC_in( 38 downto  26) ) * R_130( 12 downto   0) ;
+                        H(3) <= H(3) + ( ACC_in( 51 downto  39) ) * R_130( 12 downto   0) ;
+                        H(4) <= H(4) + ( ACC_in( 64 downto  52) ) * R_130( 12 downto   0) ;
+                        H(5) <= H(5) + ( ACC_in( 77 downto  65) ) * R_130( 12 downto   0) ;
+                        H(6) <= H(6) + ( ACC_in( 90 downto  78) ) * R_130( 12 downto   0) ;
+                        H(7) <= H(7) + ( ACC_in(103 downto  91) ) * R_130( 12 downto   0) ;
+                        H(8) <= H(8) + ( ACC_in(116 downto 104) ) * R_130( 12 downto   0) ;
+                        H(9) <= H(9) + ( ACC_in(129 downto 117) ) * R_130( 12 downto   0) ;
+                        
+                    elsif counter = 1 then
+                    
+                        H(0) <= H(0) + ( accin5(            9 ) ) * R_130( 25 downto  13) ;
+                        H(1) <= H(1) + ( ACC_in( 12 downto   0) ) * R_130( 25 downto  13) ;
+                        H(2) <= H(2) + ( ACC_in( 25 downto  13) ) * R_130( 25 downto  13) ;
+                        H(3) <= H(3) + ( ACC_in( 38 downto  26) ) * R_130( 25 downto  13) ;
+                        H(4) <= H(4) + ( ACC_in( 51 downto  39) ) * R_130( 25 downto  13) ;
+                        H(5) <= H(5) + ( ACC_in( 64 downto  52) ) * R_130( 25 downto  13) ;
+                        H(6) <= H(6) + ( ACC_in( 77 downto  65) ) * R_130( 25 downto  13) ;
+                        H(7) <= H(7) + ( ACC_in( 90 downto  78) ) * R_130( 25 downto  13) ;
+                        H(8) <= H(8) + ( ACC_in(103 downto  91) ) * R_130( 25 downto  13) ;
+                        H(9) <= H(9) + ( ACC_in(116 downto 104) ) * R_130( 25 downto  13) ;
+                    
+                    elsif counter = 2 then
+                        
+                        H(0) <= H(0) + ( accin5(            8 ) ) * R_130( 38 downto  26) ;
+                        H(1) <= H(1) + ( accin5(            9 ) ) * R_130( 38 downto  26) ;
+                        H(2) <= H(2) + ( ACC_in( 12 downto   0) ) * R_130( 38 downto  26) ;
+                        H(3) <= H(3) + ( ACC_in( 25 downto  13) ) * R_130( 38 downto  26) ;
+                        H(4) <= H(4) + ( ACC_in( 38 downto  26) ) * R_130( 38 downto  26) ;
+                        H(5) <= H(5) + ( ACC_in( 51 downto  39) ) * R_130( 38 downto  26) ;
+                        H(6) <= H(6) + ( ACC_in( 64 downto  52) ) * R_130( 38 downto  26) ;
+                        H(7) <= H(7) + ( ACC_in( 77 downto  65) ) * R_130( 38 downto  26) ;
+                        H(8) <= H(8) + ( ACC_in( 90 downto  78) ) * R_130( 38 downto  26) ;
+                        H(9) <= H(9) + ( ACC_in(103 downto  91) ) * R_130( 38 downto  26) ;
+                                                                        
+                    elsif counter = 3 then
+                    
+                        H(0) <= H(0) + ( accin5(            7 ) ) * R_130( 51 downto  39) ;
+                        H(1) <= H(1) + ( accin5(            8 ) ) * R_130( 51 downto  39) ;
+                        H(2) <= H(2) + ( accin5(            9 ) ) * R_130( 51 downto  39) ;
+                        H(3) <= H(3) + ( ACC_in( 12 downto   0) ) * R_130( 51 downto  39) ;
+                        H(4) <= H(4) + ( ACC_in( 25 downto  13) ) * R_130( 51 downto  39) ;
+                        H(5) <= H(5) + ( ACC_in( 38 downto  26) ) * R_130( 51 downto  39) ;
+                        H(6) <= H(6) + ( ACC_in( 51 downto  39) ) * R_130( 51 downto  39) ;
+                        H(7) <= H(7) + ( ACC_in( 64 downto  52) ) * R_130( 51 downto  39) ;
+                        H(8) <= H(8) + ( ACC_in( 77 downto  65) ) * R_130( 51 downto  39) ;
+                        H(9) <= H(9) + ( ACC_in( 90 downto  78) ) * R_130( 51 downto  39) ;
+                                                                                                
+                    elsif counter = 4 then
+                    
+                        H(0) <= H(0) + ( accin5(            6 ) ) * R_130( 64 downto  52) ;
+                        H(1) <= H(1) + ( accin5(            7 ) ) * R_130( 64 downto  52) ;
+                        H(2) <= H(2) + ( accin5(            8 ) ) * R_130( 64 downto  52) ;
+                        H(3) <= H(3) + ( accin5(            9 ) ) * R_130( 64 downto  52) ;
+                        H(4) <= H(4) + ( ACC_in( 12 downto   0) ) * R_130( 64 downto  52) ;
+                        H(5) <= H(5) + ( ACC_in( 25 downto  13) ) * R_130( 64 downto  52) ;
+                        H(6) <= H(6) + ( ACC_in( 38 downto  26) ) * R_130( 64 downto  52) ;
+                        H(7) <= H(7) + ( ACC_in( 51 downto  39) ) * R_130( 64 downto  52) ;
+                        H(8) <= H(8) + ( ACC_in( 64 downto  52) ) * R_130( 64 downto  52) ;
+                        H(9) <= H(9) + ( ACC_in( 77 downto  65) ) * R_130( 64 downto  52) ;
+                                           
+                    elsif counter = 5 then
+                    
+                        H(0) <= H(0) + ( accin5(            5 ) ) * R_130( 77 downto  65) ;
+                        H(1) <= H(1) + ( accin5(            6 ) ) * R_130( 77 downto  65) ;
+                        H(2) <= H(2) + ( accin5(            7 ) ) * R_130( 77 downto  65) ;
+                        H(3) <= H(3) + ( accin5(            8 ) ) * R_130( 77 downto  65) ;
+                        H(4) <= H(4) + ( accin5(            9 ) ) * R_130( 77 downto  65) ;
+                        H(5) <= H(5) + ( ACC_in( 12 downto   0) ) * R_130( 77 downto  65) ;
+                        H(6) <= H(6) + ( ACC_in( 25 downto  13) ) * R_130( 77 downto  65) ;
+                        H(7) <= H(7) + ( ACC_in( 38 downto  26) ) * R_130( 77 downto  65) ;
+                        H(8) <= H(8) + ( ACC_in( 51 downto  39) ) * R_130( 77 downto  65) ;
+                        H(9) <= H(9) + ( ACC_in( 64 downto  52) ) * R_130( 77 downto  65) ;
+                                                                                                                                                
+                    elsif counter = 6 then
+                    
+                        H(0) <= H(0) + ( accin5(            4 ) ) * R_130( 90 downto  78) ;
+                        H(1) <= H(1) + ( accin5(            5 ) ) * R_130( 90 downto  78) ;
+                        H(2) <= H(2) + ( accin5(            6 ) ) * R_130( 90 downto  78) ;
+                        H(3) <= H(3) + ( accin5(            7 ) ) * R_130( 90 downto  78) ;
+                        H(4) <= H(4) + ( accin5(            8 ) ) * R_130( 90 downto  78) ;
+                        H(5) <= H(5) + ( accin5(            9 ) ) * R_130( 90 downto  78) ;
+                        H(6) <= H(6) + ( ACC_in( 12 downto   0) ) * R_130( 90 downto  78) ;
+                        H(7) <= H(7) + ( ACC_in( 25 downto  13) ) * R_130( 90 downto  78) ;
+                        H(8) <= H(8) + ( ACC_in( 38 downto  26) ) * R_130( 90 downto  78) ;
+                        H(9) <= H(9) + ( ACC_in( 51 downto  39) ) * R_130( 90 downto  78) ;
+                                                                                                                                                                        
+                    elsif counter = 7 then
+                    
+                        H(0) <= H(0) + ( accin5(            3 ) ) * R_130(103 downto  91) ;
+                        H(1) <= H(1) + ( accin5(            4 ) ) * R_130(103 downto  91) ;
+                        H(2) <= H(2) + ( accin5(            5 ) ) * R_130(103 downto  91) ;
+                        H(3) <= H(3) + ( accin5(            6 ) ) * R_130(103 downto  91) ;
+                        H(4) <= H(4) + ( accin5(            7 ) ) * R_130(103 downto  91) ;
+                        H(5) <= H(5) + ( accin5(            8 ) ) * R_130(103 downto  91) ;
+                        H(6) <= H(6) + ( accin5(            9 ) ) * R_130(103 downto  91) ; 
+                        H(7) <= H(7) + ( ACC_in( 12 downto   0) ) * R_130(103 downto  91) ;
+                        H(8) <= H(8) + ( ACC_in( 25 downto  13) ) * R_130(103 downto  91) ;
+                        H(9) <= H(9) + ( ACC_in( 38 downto  26) ) * R_130(103 downto  91) ;
+                                                                                                                                                                                                
+                    elsif counter = 8 then
+                    
+                        H(0) <= H(0) + ( accin5(            2 ) ) * R_130(116 downto 104) ;
+                        H(1) <= H(1) + ( accin5(            3 ) ) * R_130(116 downto 104) ;
+                        H(2) <= H(2) + ( accin5(            4 ) ) * R_130(116 downto 104) ;
+                        H(3) <= H(3) + ( accin5(            5 ) ) * R_130(116 downto 104) ;
+                        H(4) <= H(4) + ( accin5(            6 ) ) * R_130(116 downto 104) ;
+                        H(5) <= H(5) + ( accin5(            7 ) ) * R_130(116 downto 104) ;
+                        H(6) <= H(6) + ( accin5(            8 ) ) * R_130(116 downto 104) ;
+                        H(7) <= H(7) + ( accin5(            9 ) ) * R_130(116 downto 104) ;
+                        H(8) <= H(8) + ( ACC_in( 12 downto   0) ) * R_130(116 downto 104) ;
+                        H(9) <= H(9) + ( ACC_in( 25 downto  13) ) * R_130(116 downto 104) ;                        
+                                                                                                                                                                                                                        
+                    --elsif counter = 9 then
+                    else
+                    
+                        H(0) <= H(0) + ( accin5(            1 ) ) * R_130(129 downto 117) ;
+                        H(1) <= H(1) + ( accin5(            2 ) ) * R_130(129 downto 117) ;
+                        H(2) <= H(2) + ( accin5(            3 ) ) * R_130(129 downto 117) ;
+                        H(3) <= H(3) + ( accin5(            4 ) ) * R_130(129 downto 117) ;
+                        H(4) <= H(4) + ( accin5(            5 ) ) * R_130(129 downto 117) ;
+                        H(5) <= H(5) + ( accin5(            6 ) ) * R_130(129 downto 117) ;
+                        H(6) <= H(6) + ( accin5(            7 ) ) * R_130(129 downto 117) ;
+                        H(7) <= H(7) + ( accin5(            8 ) ) * R_130(129 downto 117) ;
+                        H(8) <= H(8) + ( accin5(            9 ) ) * R_130(129 downto 117) ;
+                        H(9) <= H(9) + ( ACC_in( 12 downto   0) ) * R_130(129 downto 117) ;
+
+                    end if;
                     
                     counter <= counter + 1;
                     
@@ -233,16 +352,16 @@ begin
                 
                  when s_prop2 =>
                                        
-                    result0 <= result0 + H(8) (29 downto 26) + (H(8) (29 downto 26) & "00");
-                    result1 <= result1 + H(9) (29 downto 26) +  H(9) (29 downto 24); 
-                    result2 <= result2 + H(0) (29 downto 26) ; 
-                    result3 <= result3 + H(1) (29 downto 26) ; 
-                    result4 <= result4 + H(2) (29 downto 26) ; 
-                    result5 <= result5 + H(3) (29 downto 26) ; 
-                    result6 <= result6 + H(4) (29 downto 26) ; 
-                    result7 <= result7 + H(5) (29 downto 26) ; 
-                    result8 <= result8 + H(6) (29 downto 26) ; 
-                    result9 <= result9 + H(7) (29 downto 26) ;
+                    result0 <= result0 + H(8) (30 downto 26) + (H(8) (30 downto 26) & "00");
+                    result1 <= result1 + H(9) (30 downto 26) +  H(9) (30 downto 24); 
+                    result2 <= result2 + H(0) (30 downto 26) ; 
+                    result3 <= result3 + H(1) (30 downto 26) ; 
+                    result4 <= result4 + H(2) (30 downto 26) ; 
+                    result5 <= result5 + H(3) (30 downto 26) ; 
+                    result6 <= result6 + H(4) (30 downto 26) ; 
+                    result7 <= result7 + H(5) (30 downto 26) ; 
+                    result8 <= result8 + H(6) (30 downto 26) ; 
+                    result9 <= result9 + H(7) (30 downto 26) ;
                     
                     counter <= counter;
                     

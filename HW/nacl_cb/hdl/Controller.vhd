@@ -9,7 +9,8 @@ entity Controller is
         RSTN        : in  std_logic;
     
         INR_L2LOAD  : out std_logic;        
-        INR_RDY     : out std_logic;      
+        INR_RDY     : out std_logic;        
+        INR_RSTN    : out std_logic;      
         INR_DONE    : in  std_logic;
         INR_CMD     : in  std_logic_vector(15 downto 0);
         INR_MLEN    : in  std_logic_vector(15 downto 0);
@@ -32,6 +33,7 @@ entity Controller is
         CIP_SEL     : out std_logic_vector(1 downto 0);
         
         POL_INIT    : out std_logic;
+        POL_RSTN     : out std_logic;
         POL_RSLOAD  : out std_logic;
         POL_LAST    : out std_logic;
         POL_LEN     : out std_logic_vector(3 downto 0);
@@ -55,6 +57,7 @@ architecture Behavioral of Controller is
 
     signal sig_INR_L2LOAD  : std_logic := '0';       
     signal sig_INR_RDY     : std_logic := '0';
+    signal sig_INR_RSTN    : std_logic := '1';
         
     signal sig_NOM_SEL     : std_logic := '0';
     signal sig_NOM_RST     : std_logic := '0';
@@ -73,6 +76,7 @@ architecture Behavioral of Controller is
     signal sig_CIP_SEL     : std_logic_vector(1 downto 0) := (others => '0');
         
     signal sig_POL_INIT    : std_logic := '0';
+    signal sig_POL_RSTN    : std_logic := '0';
     signal sig_POL_RSLOAD  : std_logic := '0';
     signal sig_POL_LAST    : std_logic := '0';
     signal sig_POL_LEN     : std_logic_vector(3 downto 0) := (others => '1');
@@ -88,10 +92,10 @@ architecture Behavioral of Controller is
     signal sig_DMA_CONT    : std_logic := '0';
     signal sig_DMA_TLEN    : std_logic_vector(15 downto 0) := (others => '0');
 
-    type state_type is (s_idle, s_read_init, s_middle1, s_2ndkey, s_middle2, s_middle3, s_firstsalsa, s_block1, s_middle, s_block2);
+    type state_type is (s_reset, s_idle, s_read_init, s_middle1, s_2ndkey, s_middle2, s_middle3, s_firstsalsa, s_block1, s_middle, s_block2);
     signal state   : state_type;
     
-    signal cnt_bytes        : std_logic_vector(9 downto 0) := (others => '0');
+    signal cnt_bytes        : std_logic_vector(10 downto 0) := (others => '0');
 
     signal reg_firstblock   : std_logic := '0';
     signal reg_pol_lim      : std_logic_vector(1 downto 0) := (others => '0');
@@ -99,7 +103,8 @@ architecture Behavioral of Controller is
 begin
 
     INR_L2LOAD  <= sig_INR_L2LOAD  ;       
-    INR_RDY     <= sig_INR_RDY     ;
+    INR_RDY     <= sig_INR_RDY     ;    
+    INR_RSTN    <= sig_INR_RSTN     ;
         
     NOM_SEL     <= sig_NOM_SEL     ;
     NOM_RST     <= sig_NOM_RST     ;
@@ -118,6 +123,7 @@ begin
     CIP_SEL     <= sig_CIP_SEL     ;
         
     POL_INIT    <= sig_POL_INIT    ;
+    POL_RSTN    <= sig_POL_RSTN     ;
     POL_RSLOAD  <= sig_POL_RSLOAD  ;
     POL_LAST    <= sig_POL_LAST    ;
     POL_LEN     <= sig_POL_LEN     ;
@@ -140,19 +146,29 @@ begin
         if RSTN = '0' then
         
             sig_NOM_RST <= '1';
-            state <= s_idle;
+            state <= s_reset;
             reg_firstblock <= '0';
             reg_pol_lim <= "00";
         else
               
             case state is
                 
+                when s_reset =>
+                    
+                    state <= s_idle;    
+                    
+                    sig_INR_RSTN    <= '0';
+                    sig_NOM_RST     <= '1'; 
+                    sig_POL_RSTN    <= '0';
+                    
+                                
                 when s_idle =>
                 
                     state <= s_read_init;                    
                     
                     
                     sig_INR_RDY     <= '1';
+                    sig_INR_RSTN    <= '1';
                     
                     sig_NOM_RST     <= '0'; 
                     sig_NOM_SEL     <= '0';
@@ -169,9 +185,12 @@ begin
                     
                     sig_DCR_EN      <= '0';
                     sig_DCR_SEL     <= '0'; 
-                                        
+                    
+                    sig_POL_RSTN    <= '1';
                     sig_POL_LAST    <= '0';
                     sig_POL_LEN     <= "1111";
+                    
+                    sig_MAC_SEL     <= '0';
                     
                     sig_OUT_LAST    <= '0';  
                     
@@ -261,14 +280,19 @@ begin
                     if HoS_DONE = '1' then
                         sig_DMA_INIT    <= '1';
                         sig_DMA_CONT    <= '1';
-                        sig_DMA_TLEN    <= INR_MLEN + "10000";
+                        
+                        if INR_MLEN(3 downto 0) = "0000" then
+                            sig_DMA_TLEN    <= INR_MLEN + "10000";
+                        else
+                            sig_DMA_TLEN    <= (INR_MLEN(15 downto 2) & "00") + "10100";
+                        end if;
                     else
                         sig_DMA_INIT    <= '0';
                         sig_DMA_CONT    <= '0';
                         sig_DMA_TLEN    <= (others => '0');
                     end if;
                     
-                    cnt_bytes       <= INR_MLEN(9 downto 0) - '1';
+                    cnt_bytes       <= INR_MLEN(10 downto 0) - '1';
                                         
                     reg_firstblock <= reg_firstblock;
                  
@@ -402,7 +426,7 @@ begin
                         state <= s_middle;
                         
                         
-                        if cnt_bytes(9 downto 5) /= "0000" then
+                        if cnt_bytes(10 downto 5) /= "00000" then
                         --if cnt_bytes > 32 then
                          
                             -- If there are more blocks (full or partial)
@@ -465,7 +489,7 @@ begin
                                                         
                         end if;
                     
-                    elsif cnt_bytes(9 downto 0) = "1111111111" then   
+                    elsif cnt_bytes(10 downto 0) = "11111111111" then   
                     --elsif cnt_bytes == -1 then
                     
                         state <= s_middle;
@@ -491,7 +515,7 @@ begin
                         sig_OUT_LAST    <= '1';
                         sig_MAC_SEL     <= '1';
                     
-                    elsif cnt_bytes(9 downto 6) /= "0000" then
+                    elsif cnt_bytes(10 downto 6) /= "00000" then
                     --elsif cnt_bytes > 64 then
                     
                         state <= s_middle;
@@ -565,128 +589,130 @@ begin
                     
                 when s_block2 =>
                     
-                    sig_OUT_INIT    <= '0';                                        
-                    sig_HoS_INIT    <= '0';                    
-                    
-                    sig_INR_RDY     <= '0';
-                                
-                    sig_NOM_RST     <= sig_NOM_RST;
-                    sig_NOM_SEL     <= sig_NOM_SEL;
-                    sig_NOM_UPD     <= '0';
-                    
-                    sig_HoS_SEL     <= sig_HoS_SEL;
-                    
-                    sig_KEY_SEL     <= sig_KEY_SEL;
-                    
-                    sig_INR_L2LOAD  <= sig_INR_L2LOAD;
-                    
-                    sig_POL_RSLOAD  <= sig_POL_RSLOAD;
-                                                            
-                    sig_REG_EN      <= '0';
-                    sig_DCR_EN      <= '0';
-                    
-                    sig_OUT_LAST    <= sig_OUT_LAST;                      
-                    
-                    
-                    -- Now I start receiving done signals.
-                    -- And if I will wait them.
-                    -- There are 4 done signals:
-                    -- --> INR_DONE for input register fetching one more block of inputs
-                    -- --> HoS_DONE for hSalsa block creating one more block of cipher stream
-                    -- --> POL_DONE for Poly1305 creating MAC of one quarter block
-                    --     So it should be considered together with sig_CIP_SEL signal and reg_pol_lim
-                    --     If there are equal that means it was the last work of it.
-                    -- --> OUT_DONE for Output block to send one block cipher or plain text to RAM
-                    --
-                    -- If there was no more (full) blocks or (partial blocks) bytes, 
-                    -- to be encryted or decrypted, the operation I am waiting here should be 
-                    -- sending last outputs. Be careful to that.  
-                    
-                    if cnt_bytes = "1111111111" then
-                    
-                        -- All data is processed, so wait only for POL_DONE and OUT_DONE
-                                            
-                        if OUT_DONE = '1' then
-                            state <= s_block2;                                                         
-                        else
-                            -- wait in this state 
-                            state <= s_block2;
-                        end if;
-                    
-                    else
-                    
-                        if HoS_DONE = '1' and INR_DONE = '1' and (sig_CIP_SEL = reg_pol_lim and POL_DONE = '1') and OUT_DONE = '1' then
-                        
-                            if reg_firstblock = '1' then                 
-                                
-                                reg_firstblock  <= '0';     
-                                
-                                if cnt_bytes(9 downto 5) /= "00000" then
-                                
-                                    cnt_bytes   <= cnt_bytes - "0100000";
-                                else
-                                    cnt_bytes(9 downto 0) <= "1111111111";
-                                end if;
-                                                
-                            else
-                            
-                                reg_firstblock  <= reg_firstblock;
+                   sig_OUT_INIT    <= '0';                                        
+                   sig_HoS_INIT    <= '0';                    
+                   
+                   sig_INR_RDY     <= '0';
+                               
+                   sig_NOM_RST     <= sig_NOM_RST;
+                   sig_NOM_SEL     <= sig_NOM_SEL;
+                   sig_NOM_UPD     <= '0';
+                   
+                   sig_HoS_SEL     <= sig_HoS_SEL;
+                   
+                   sig_KEY_SEL     <= sig_KEY_SEL;
+                   
+                   sig_INR_L2LOAD  <= sig_INR_L2LOAD;
+                   
+                   sig_POL_RSLOAD  <= sig_POL_RSLOAD;
                                                            
-                        
-                                if cnt_bytes(9 downto 6) /= "0000" then
-                                                            
-                                    -- Last processed block was one of full blocks.
-                                    -- Decrement remaining bytes by one block
-                                    
-                                    cnt_bytes   <= cnt_bytes - "1000000";
-                                    
-                                --elsif cnt_bytes(9 downto 6) = "000000" and cnt_bytes(5 downto 0) /= "000000" then
-                                --elsif cnt_bytes(5 downto 0) /= "000000" then
-                                else
-                                    -- All the full blocks are processed, 
-                                    -- Last processed was a partial block.
-                                    -- Now there is no more bytes to process.
-                                    
-                                    cnt_bytes(9 downto 0) <= "1111111111";
-                                    
-    --                            else
-    --                                cnt_bytes   <= cnt_bytes; 
-    --                                reg_firstblock  <= reg_firstblock;
-                                end if;
-                            end if; 
-                            state <= s_block1;
-                            
-                        else
-                            
-                            if sig_CIP_SEL /= reg_pol_lim and POL_DONE = '1' then                        
-                                sig_CIP_SEL     <= sig_CIP_SEL + '1';
-                                sig_POL_INIT    <= '1';
-                                
-                                if reg_firstblock = '1' and cnt_bytes(9 downto 5) = "00000" and sig_CIP_SEL = (reg_pol_lim - '1') then
-                                    sig_POL_LAST    <= '1';                                    
-                                    sig_POL_LEN     <= cnt_bytes(3 downto 0);    
-                                    
-                                elsif reg_firstblock = '0' and cnt_bytes(9 downto 6) = "0000"  and sig_CIP_SEL = (reg_pol_lim - '1') then
-                                    sig_POL_LAST    <= '1';
-                                    sig_POL_LEN     <= cnt_bytes(3 downto 0);                              
-                                else 
-                                    sig_POL_LAST    <= '0';
-                                end if;
-                                
-                                state <= s_middle;
-                            else
-                                sig_POL_INIT    <= '0';
-                                
-                                state <= s_block2;
-                            end if; 
-                        
-                            cnt_bytes   <= cnt_bytes; 
-                            reg_firstblock  <= reg_firstblock;
-                            
-                            --state <= s_block2;
-                        end if;
-                    
-                    end if;                    
+                   sig_REG_EN      <= '0';
+                   sig_DCR_EN      <= '0';
+                   
+                   sig_OUT_LAST    <= sig_OUT_LAST;                      
+                   
+                   
+                   -- Now I start receiving done signals.
+                   -- And if I will wait them.
+                   -- There are 4 done signals:
+                   -- --> INR_DONE for input register fetching one more block of inputs
+                   -- --> HoS_DONE for hSalsa block creating one more block of cipher stream
+                   -- --> POL_DONE for Poly1305 creating MAC of one quarter block
+                   --     So it should be considered together with sig_CIP_SEL signal and reg_pol_lim
+                   --     If there are equal that means it was the last work of it.
+                   -- --> OUT_DONE for Output block to send one block cipher or plain text to RAM
+                   --
+                   -- If there was no more (full) blocks or (partial blocks) bytes, 
+                   -- to be encryted or decrypted, the operation I am waiting here should be 
+                   -- sending last outputs. Be careful to that.  
+                   
+                   if cnt_bytes = "11111111111" then
+                   
+                       -- All data is processed, so wait only for POL_DONE and OUT_DONE
+                                           
+                       if OUT_DONE = '1' then
+                           state <= s_reset;  
+                           
+                           sig_INR_RSTN <= '0';
+                                                                                  
+                       else
+                           -- wait in this state 
+                           state <= s_block2;
+                       end if;
+                   
+                   else
+                   
+                       if HoS_DONE = '1' and INR_DONE = '1' and (sig_CIP_SEL = reg_pol_lim and POL_DONE = '1') and OUT_DONE = '1' then
+                       
+                           if reg_firstblock = '1' then                 
+                               
+                               reg_firstblock  <= '0';     
+                               
+                               if cnt_bytes(10 downto 5) /= "000000" then
+                               
+                                   cnt_bytes   <= cnt_bytes - "0100000";
+                               else
+                                   cnt_bytes(10 downto 0) <= "11111111111";
+                               end if;
+                                               
+                           else
+                           
+                               reg_firstblock  <= reg_firstblock;
+                                                          
+                       
+                               if cnt_bytes(10 downto 6) /= "00000" then
+                                                           
+                                   -- Last processed block was one of full blocks.
+                                   -- Decrement remaining bytes by one block
+                                   
+                                   cnt_bytes   <= cnt_bytes - "1000000";
+                                   
+                               --elsif cnt_bytes(9 downto 6) = "000000" and cnt_bytes(5 downto 0) /= "000000" then
+                               --elsif cnt_bytes(5 downto 0) /= "000000" then
+                               else
+                                   -- All the full blocks are processed, 
+                                   -- Last processed was a partial block.
+                                   -- Now there is no more bytes to process.
+                                   
+                                   cnt_bytes(10 downto 0) <= "11111111111";
+                                   
+                               end if;
+                           end if; 
+                           state <= s_block1;
+                           
+                       else
+                           
+                           if sig_CIP_SEL /= reg_pol_lim and POL_DONE = '1' then                        
+                               sig_CIP_SEL     <= sig_CIP_SEL + '1';
+                               sig_POL_INIT    <= '1';
+                               
+                               if reg_firstblock = '1' and cnt_bytes(10 downto 5) = "000000" and sig_CIP_SEL = (reg_pol_lim - '1') then
+                                   sig_POL_LAST    <= '1';                                    
+                                   sig_POL_LEN     <= cnt_bytes(3 downto 0);    
+                                   
+                               elsif reg_firstblock = '0' and cnt_bytes(10 downto 6) = "00000"  and sig_CIP_SEL = (reg_pol_lim - '1') then
+                                   sig_POL_LAST    <= '1';
+                                   sig_POL_LEN     <= cnt_bytes(3 downto 0);                              
+                               else 
+                                   sig_POL_LAST    <= '0';
+                               end if;
+                               
+                               state <= s_middle;
+                           else
+                               sig_POL_INIT    <= '0';
+                               
+                               state <= s_block2;
+                           end if; 
+                       
+                           cnt_bytes   <= cnt_bytes; 
+                           reg_firstblock  <= reg_firstblock;
+                           
+                           --state <= s_block2;
+                       end if;
+                   
+                   end if;  
+                
+                                                           
                     
                  when others =>
                     null;                        

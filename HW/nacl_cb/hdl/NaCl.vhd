@@ -144,6 +144,7 @@ architecture Behavioral of NaCl is
         RSTN : in STD_LOGIC;
         INR_L2LOAD : out STD_LOGIC;
         INR_RDY : out STD_LOGIC;
+        INR_RSTN: out STD_LOGIC;
         INR_DONE : in STD_LOGIC;
         INR_CMD : in STD_LOGIC_VECTOR ( 15 downto 0 );
         INR_MLEN : in STD_LOGIC_VECTOR ( 15 downto 0 );
@@ -159,6 +160,7 @@ architecture Behavioral of NaCl is
         DCR_SEL : out STD_LOGIC;
         CIP_SEL : out STD_LOGIC_VECTOR ( 1 downto 0 );
         POL_INIT : out STD_LOGIC;
+        POL_RSTN : out std_logic;
         POL_RSLOAD : out STD_LOGIC;
         POL_LAST : out STD_LOGIC;
         POL_LEN : out STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -192,6 +194,7 @@ architecture Behavioral of NaCl is
 
     signal sig_INR_L2LOAD 	   : STD_LOGIC;
     signal sig_INR_RDY 	       : STD_LOGIC;
+    signal sig_INR_RSTN 	   : STD_LOGIC;
     signal sig_INR_DONE 	   : STD_LOGIC;
     signal sig_INR_CMD 	       : STD_LOGIC_VECTOR ( 15 downto 0 );
     signal sig_INR_MLEN 	   : STD_LOGIC_VECTOR ( 15 downto 0 );
@@ -207,6 +210,7 @@ architecture Behavioral of NaCl is
     signal sig_DCR_SEL 	       : STD_LOGIC;
     signal sig_CIP_SEL 	       : STD_LOGIC_VECTOR ( 1 downto 0 );
     signal sig_POL_INIT 	   : STD_LOGIC;
+    signal sig_POL_RSTN  	   : STD_LOGIC;
     signal sig_POL_RSLOAD 	   : STD_LOGIC;
     signal sig_POL_LAST 	   : STD_LOGIC;
     signal sig_POL_LEN 	       : STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -355,7 +359,7 @@ begin
         RDY                 => sig_INR_RDY,
         DONE                => sig_INR_DONE,
         S_AXIS_ACLK         => CLK,
-        S_AXIS_ARESETN      => RSTN,
+        S_AXIS_ARESETN      => sig_INR_RSTN,
         S_AXIS_TREADY 	    => S_AXIS_TREADY ,
         S_AXIS_TDATA        => S_AXIS_TDATA ,
         S_AXIS_TLAST        => S_AXIS_TLAST ,
@@ -368,6 +372,7 @@ begin
         RSTN                => RSTN,
         INR_L2LOAD          => sig_INR_L2LOAD,
         INR_RDY             => sig_INR_RDY,
+        INR_RSTN            => sig_INR_RSTN,
         INR_DONE            => sig_INR_DONE,
         INR_CMD             => sig_INR_CMD,
         INR_MLEN            => sig_INR_MLEN,
@@ -383,6 +388,7 @@ begin
         DCR_SEL             => sig_DCR_SEL,
         CIP_SEL             => sig_CIP_SEL,
         POL_INIT            => sig_POL_INIT,
+        POL_RSTN            => sig_POL_RSTN, 
         POL_RSLOAD          => sig_POL_RSLOAD,
         POL_LAST            => sig_POL_LAST,
         POL_LEN             => sig_POL_LEN,
@@ -401,7 +407,7 @@ begin
       PLY: component Poly1305
       port map (
         CLK                 => CLK,
-        RSTN                => RSTN,
+        RSTN                => sig_POL_RSTN,
         INIT                => sig_POL_INIT,
         LOAD_RS             => sig_POL_RSLOAD,
         LAST                => sig_POL_LAST,

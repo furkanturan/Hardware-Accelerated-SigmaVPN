@@ -55,7 +55,7 @@ architecture Behavioral of OutputDMA is
 begin
 
     index <= wordcounter & "00000";
-    M_AXIS_TDATA    <= D_IN( to_integer(unsigned(index)) + 31 downto to_integer(unsigned(index)));
+    M_AXIS_TDATA      <= D_IN( to_integer(unsigned(index)) + 31 downto to_integer(unsigned(index)));
     
     M_AXIS_TVALID   <= tvalid;
     M_AXIS_TLAST    <= tlast;  
@@ -118,7 +118,7 @@ begin
                             sig_done <= sig_done;                             
                         end if;
                         
-                        if wordcounter = reg_last and LAST='1' then                                          
+                        if wordcounter = reg_last and LAST='1' then 
                             tlast <= '1';
                         else
                             tlast <= '0';                             
