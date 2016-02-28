@@ -47,7 +47,7 @@
 #define DRIVER_NAME					"ds_axidma_pdrv"
 #define MODULE_NAME 				"ds_axidma"
 
-#define DMA_LENGTH					(32*1024)
+#define DMA_LENGTH					(1596 * sizeof(unsigned char))
 
 int flag = 0;
 
@@ -157,9 +157,6 @@ static int ds_axidma_open(struct inode *i, struct file *f)
 	request_mem_region(obj_dev->bus_addr, obj_dev->bus_size, MODULE_NAME);
 	obj_dev->virt_bus_addr = (char *) ioremap_nocache(obj_dev->bus_addr, obj_dev->bus_size);
 
-	iowrite32(4097, obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG);
-	iowrite32(4096, obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
-	iowrite32(1, obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG);
 	iowrite32(obj_dev->ds_axidma_handle, obj_dev->virt_bus_addr + MM2S_SOURCE_ADDRESS_REG);
 	iowrite32(obj_dev->ds_axidma_handle, obj_dev->virt_bus_addr + S2MM_DESTINATION_ADDRESS);
 
@@ -201,93 +198,113 @@ static ssize_t ds_axidma_read(struct file *f, char __user * buf, size_t len, lof
 	return 0;
 }
 
-static inline unsigned int get_cyclecount (void)
-{
-	unsigned int value;
-	// Read CCNT Register
-	asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(value));
-	return value;
-}
+// static inline unsigned int get_cyclecount (void)
+// {
+// 	unsigned int value;
+// 	// Read CCNT Register
+// 	asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(value));
+// 	return value;
+// }
 
-static inline void init_perfcounters (int32_t do_reset, int32_t enable_divider)
-{
-  // in general enable all counters (including cycle counter)
-  int32_t value = 1;
+// static inline void init_perfcounters (int32_t do_reset, int32_t enable_divider)
+// {
+//   // in general enable all counters (including cycle counter)
+//   int32_t value = 1;
 
-  // peform reset:
-  if (do_reset)
-  {
-    value |= 2;     // reset all counters to zero.
-    value |= 4;     // reset cycle counter to zero.
-  }
+//   // peform reset:
+//   if (do_reset)
+//   {
+//     value |= 2;     // reset all counters to zero.
+//     value |= 4;     // reset cycle counter to zero.
+//   }
 
-  if (enable_divider)
-    value |= 8;     // enable "by 64" divider for CCNT.
+//   if (enable_divider)
+//     value |= 8;     // enable "by 64" divider for CCNT.
 
-  value |= 16;
+//   value |= 16;
 
-  // program the performance-counter control-register:
-  asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"(value));
+//   // program the performance-counter control-register:
+//   asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"(value));
 
-  // enable all counters:
-  asm volatile ("MCR p15, 0, %0, c9, c12, 1\t\n" :: "r"(0x8000000f));
+//   // enable all counters:
+//   asm volatile ("MCR p15, 0, %0, c9, c12, 1\t\n" :: "r"(0x8000000f));
 
-  // clear overflows:
-  asm volatile ("MCR p15, 0, %0, c9, c12, 3\t\n" :: "r"(0x8000000f));
-}
+//   // clear overflows:
+//   asm volatile ("MCR p15, 0, %0, c9, c12, 3\t\n" :: "r"(0x8000000f));
+// }
 
 static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t len, loff_t * off)
 {
-
+    
 	struct ds_axidma_device *obj_dev;
-	unsigned int counter = 0;
+	unsigned short reallength = 0, extralength;
+            // unsigned int counter = 0;
 
+			// unsigned int overhead, i = 0;
+			// unsigned int a, b, c, d, e, g;
+			// unsigned int m1_avg, wr_avg, wt_avg, m2_avg;
 
-			unsigned int overhead, i = 0;
-			unsigned int a, b, c, d, e, g;
-			unsigned int m1_avg, wr_avg, wt_avg, m2_avg;
+			// // measure the counting overhead:
+			// init_perfcounters (1, 0);
 
-			// measure the counting overhead:
-			init_perfcounters (1, 0);
+			// overhead = get_cyclecount();
+			// overhead = get_cyclecount() - overhead;
 
-			overhead = get_cyclecount();
-			overhead = get_cyclecount() - overhead;
+			// m1_avg 	= 0;
+			// wr_avg 	= 0;
+			// wt_avg 	= 0;
+			// m2_avg 	= 0;
 
-			m1_avg 	= 0;
-			wr_avg 	= 0;
-			wt_avg 	= 0;
-			m2_avg 	= 0;
+			// // Execute code for 512 times, and average profilinf results
+			// for(i=0; i<512; i++)
+			// {
 
-			// Execute code for 512 times, and average profilinf results
-			for(i=0; i<512; i++)
-			{
+			// 	// Reset counters at each loop
+			// 	init_perfcounters (1, 0);
 
-				// Reset counters at each loop
-				init_perfcounters (1, 0);
-
-				a = get_cyclecount();
-
-	// get the device of the driver file f 
+			// 	a = get_cyclecount();
+    
+    // get the device of the driver file f 
 	obj_dev = get_elem_from_list_by_inode(f->f_inode);
 
 	// set interrupt flag, which will be reset by interrupt handler function
-	flag = 1;
+	//flag = 1;
 				// Reset interrupt flag, only necessary if interrupt is not used
-				iowrite32(4096, obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
-				wmb();
+				//iowrite32(4096, obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
+				//wmb();
 
-				b = get_cyclecount();
+				// b = get_cyclecount();
 
-	// copy input buffer to coherent memory space
-	memcpy(obj_dev->ds_axidma_addr, buf, len);
+    iowrite32(4097, obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG);
+	iowrite32(4096, obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
+    
+	iowrite32(1, obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG);
+	
 
-				c = get_cyclecount();
+    
+    reallength = (buf[3] << 8) + buf[2];
 
-	// Write length of data trasnfer to initiate transfer
-	iowrite32(len, obj_dev->virt_bus_addr + MM2S_TRANSFER_LENGTH);
+    extralength = 4 - (reallength % 4);
+    if(extralength == 4)    extralength = 0;
 
+    if((buf[0] & 0x01) == 1)
+    {    
+	   // copy input buffer to coherent memory space
+	   memcpy(obj_dev->ds_axidma_addr, buf, reallength+60+4);
 
-				d = get_cyclecount();
+	   // Write length of data trasnfer to initiate transfer
+	   iowrite32(reallength+extralength+60, obj_dev->virt_bus_addr + MM2S_TRANSFER_LENGTH);
+    }
+    else
+    {
+	   // copy input buffer to coherent memory space
+	   memcpy(obj_dev->ds_axidma_addr, buf, reallength+28+4);
+
+	   // Write length of data trasnfer to initiate transfer
+	   iowrite32(reallength+extralength+28, obj_dev->virt_bus_addr + MM2S_TRANSFER_LENGTH);
+        
+    }
+				// d = get_cyclecount();
 
 	// poll for DMA transfer comlete
 	dmaSynchS2MM(obj_dev);
@@ -310,34 +327,34 @@ static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t 
 	// 	}
 	// }
 
-				e = get_cyclecount();
+				// e = get_cyclecount();
 
 	// copy received buffer at ciherent memory space back to input buffer
-	memcpy((char __user*)buf, obj_dev->ds_axidma_addr, len);
+	memcpy((char __user*)buf, obj_dev->ds_axidma_addr, reallength+extralength+16);
 
 
-				g = get_cyclecount();
+			// 	g = get_cyclecount();
 
-				// acculmulate counters
-				m1_avg 	+= c - b - overhead;
-				wr_avg 	+= d - c - overhead;
-				wt_avg 	+= e - d - overhead;
-				m2_avg 	+= g - e - overhead;
-			}
+			// 	// acculmulate counters
+			// 	m1_avg 	+= c - b - overhead;
+			// 	wr_avg 	+= d - c - overhead;
+			// 	wt_avg 	+= e - d - overhead;
+			// 	m2_avg 	+= g - e - overhead;
+			// }
 
-			// take average of counters
-			m1_avg /= 512;
-			wr_avg /= 512;
-			wt_avg /= 512;
-			m2_avg /= 512;
+			// // take average of counters
+			// m1_avg /= 512;
+			// wr_avg /= 512;
+			// wt_avg /= 512;
+			// m2_avg /= 512;
 
-			// show counters
-			printk ("memcpy() %d cycles\n", m1_avg);
-			printk ("iowrite32() %d cycles\n", wr_avg);
-			printk ("waiting %d cycles\n", wt_avg);
-			printk ("memcpy() %d cycles\n", m2_avg);
-			printk ("total %d cycles\n", m1_avg + wr_avg + wt_avg + m2_avg);
-			printk ("total %d cycles\n", g-a);
+			// // show counters
+			// printk ("memcpy() %d cycles\n", m1_avg);
+			// printk ("iowrite32() %d cycles\n", wr_avg);
+			// printk ("waiting %d cycles\n", wt_avg);
+			// printk ("memcpy() %d cycles\n", m2_avg);
+			// printk ("total %d cycles\n", m1_avg + wr_avg + wt_avg + m2_avg);
+			// printk ("total %d cycles\n", g-a);
 
 
 
@@ -349,7 +366,7 @@ static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t 
 	// printk(KERN_INFO "%X\n", bus_addr);
 	// printk(KERN_INFO "%lu\n", bus_size);
 
-	return len;
+	return reallength;
 }
 
 static struct file_operations fops = {
