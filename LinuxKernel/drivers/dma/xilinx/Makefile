@@ -1,3 +1,4 @@
+#obj-$(CONFIG_XILINX_AXIDMA) += nacl_dma.o
 obj-$(CONFIG_XILINX_AXIDMA) += ds_axidma.o
 #obj-$(CONFIG_XILINX_AXIDMA) += xilinx_axidma.o
 #obj-$(CONFIG_XILINX_DMATEST) += axidmatest.o
