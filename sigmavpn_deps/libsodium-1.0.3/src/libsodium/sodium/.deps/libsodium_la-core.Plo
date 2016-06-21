@@ -1,0 +1,116 @@
+sodium/libsodium_la-core.lo: sodium/core.c \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h \
+ include/sodium/core.h include/sodium/export.h \
+ include/sodium/crypto_onetimeauth.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h \
+ include/sodium/crypto_onetimeauth_poly1305.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/types.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/features.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/cdefs.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/wordsize.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/gnu/stubs.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/gnu/stubs-soft.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/types.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/typesizes.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/time.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/endian.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/endian.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/byteswap.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/byteswap-16.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/select.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/select.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/sigset.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/time.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/sysmacros.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/pthreadtypes.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stdint.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdint.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/wchar.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdio.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/libio.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/_G_config.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/wchar.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stdarg.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/stdio_lim.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/sys_errlist.h \
+ include/sodium/randombytes.h include/sodium/runtime.h \
+ include/sodium/utils.h
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h:
+
+include/sodium/core.h:
+
+include/sodium/export.h:
+
+include/sodium/crypto_onetimeauth.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h:
+
+include/sodium/crypto_onetimeauth_poly1305.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/types.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/features.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/cdefs.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/wordsize.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/gnu/stubs.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/gnu/stubs-soft.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/types.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/typesizes.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/time.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/endian.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/endian.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/byteswap.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/byteswap-16.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/select.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/select.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/sigset.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/time.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/sysmacros.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/pthreadtypes.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stdint.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdint.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/wchar.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdio.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/libio.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/_G_config.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/wchar.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stdarg.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/stdio_lim.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/sys_errlist.h:
+
+include/sodium/randombytes.h:
+
+include/sodium/runtime.h:
+
+include/sodium/utils.h:

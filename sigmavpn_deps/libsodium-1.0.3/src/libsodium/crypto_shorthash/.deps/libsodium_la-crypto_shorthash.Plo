@@ -1,0 +1,19 @@
+crypto_shorthash/libsodium_la-crypto_shorthash.lo: \
+ crypto_shorthash/crypto_shorthash.c \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h \
+ include/sodium/crypto_shorthash.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h \
+ include/sodium/crypto_shorthash_siphash24.h include/sodium/export.h
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h:
+
+include/sodium/crypto_shorthash.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h:
+
+include/sodium/crypto_shorthash_siphash24.h:
+
+include/sodium/export.h:

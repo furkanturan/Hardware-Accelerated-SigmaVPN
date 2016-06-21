@@ -1,0 +1,55 @@
+crypto_pwhash/scryptsalsa208sha256/libsodium_la-crypto_scrypt-common.lo: \
+ crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stdint.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdint.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/features.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/cdefs.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/wordsize.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/gnu/stubs.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/gnu/stubs-soft.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/wchar.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/string.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/xlocale.h \
+ include/sodium/crypto_pwhash_scryptsalsa208sha256.h \
+ include/sodium/export.h \
+ crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h \
+ include/sodium/runtime.h include/sodium/utils.h
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stdint.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdint.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/features.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/sys/cdefs.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/wordsize.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/gnu/stubs.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/gnu/stubs-soft.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/wchar.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/string.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/xlocale.h:
+
+include/sodium/crypto_pwhash_scryptsalsa208sha256.h:
+
+include/sodium/export.h:
+
+crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h:
+
+include/sodium/runtime.h:
+
+include/sodium/utils.h:

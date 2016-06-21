@@ -1,0 +1,17 @@
+crypto_sign/edwards25519sha512batch/libsodium_la-sign_edwards25519sha512batch_api.lo: \
+ crypto_sign/edwards25519sha512batch/sign_edwards25519sha512batch_api.c \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h \
+ include/sodium/crypto_sign_edwards25519sha512batch.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h \
+ include/sodium/export.h
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h:
+
+include/sodium/crypto_sign_edwards25519sha512batch.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h:
+
+include/sodium/export.h:

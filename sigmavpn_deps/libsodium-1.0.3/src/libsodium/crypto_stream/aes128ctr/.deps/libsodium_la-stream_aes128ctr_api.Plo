@@ -1,0 +1,17 @@
+crypto_stream/aes128ctr/libsodium_la-stream_aes128ctr_api.lo: \
+ crypto_stream/aes128ctr/stream_aes128ctr_api.c \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h \
+ include/sodium/crypto_stream_aes128ctr.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h \
+ include/sodium/export.h
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h:
+
+include/sodium/crypto_stream_aes128ctr.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h:
+
+include/sodium/export.h:

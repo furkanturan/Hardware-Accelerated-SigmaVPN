@@ -1,0 +1,22 @@
+crypto_box/curve25519xsalsa20poly1305/ref/libsodium_la-box_curve25519xsalsa20poly1305.lo: \
+ crypto_box/curve25519xsalsa20poly1305/ref/box_curve25519xsalsa20poly1305.c \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h \
+ crypto_box/curve25519xsalsa20poly1305/ref/api.h \
+ include/sodium/crypto_box_curve25519xsalsa20poly1305.h \
+ /opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h \
+ include/sodium/export.h include/sodium/utils.h
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/stdc-predef.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/arm-xilinx-linux-gnueabi/libc/usr/include/bits/predefs.h:
+
+crypto_box/curve25519xsalsa20poly1305/ref/api.h:
+
+include/sodium/crypto_box_curve25519xsalsa20poly1305.h:
+
+/opt/Xilinx/SDK/2014.3.1/gnu/arm/lin/lib/gcc/arm-xilinx-linux-gnueabi/4.8.3/include/stddef.h:
+
+include/sodium/export.h:
+
+include/sodium/utils.h:
