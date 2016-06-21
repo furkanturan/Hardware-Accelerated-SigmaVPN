@@ -142,6 +142,46 @@ struct vm_operations_struct dma_buffer_ops = {};
 
 static int mmap_DMA_Buffer(struct file *file_p, struct vm_area_struct *vma)
 {
+    // struct dma_buffer *buf;
+    // char* buffy;   
+    // size_t size;
+            
+    // size = vma->vm_end - vma->vm_start;    
+    
+    // buf = &dev->dma_buf;
+            
+    // buf->cpu_addr = (char*) kmalloc( size, GFP_KERNEL );
+        
+    // if (buf->cpu_addr == NULL)
+    //     return -ENOMEM;
+    
+    // buf->dma_addr = virt_to_phys( buf->cpu_addr );
+        
+    // memcpy(buf->cpu_addr, &buf->dma_addr, sizeof(buf->dma_addr));
+    
+    // buf->size = size;
+    // buf->priv_data = dev;
+    // vma->vm_ops = &dma_buffer_ops;
+    // vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+    // vma->vm_private_data = buf;
+    
+    // if (remap_pfn_range(vma, 
+    //                     vma->vm_start,
+    //                     vmalloc_to_pfn(buf->cpu_addr),
+    //                     size, 
+    //                     vma->vm_page_prot))
+    // {
+    //     dma_free_coherent(NULL,
+    //                       buf->size, 
+    //                       buf->cpu_addr,
+    //                       buf->dma_addr);
+                          
+    //     buf->cpu_addr = NULL;        
+    //     return -EAGAIN;
+    // }
+    
+    // return SUCCESS;
+    
     struct dma_buffer *buf;
     size_t size;
             
@@ -182,6 +222,9 @@ static int mmap_DMA_Buffer(struct file *file_p, struct vm_area_struct *vma)
     }
     
     return SUCCESS;
+    
+    
+    
 }
 
 /*

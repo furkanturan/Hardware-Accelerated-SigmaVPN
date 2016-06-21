@@ -235,6 +235,8 @@ static ssize_t ds_axidma_read(struct file *f, char __user * buf, size_t len, lof
 
 static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t len, loff_t * off)
 {
+    // char* buffy;
+    // unsigned long phybuffy;
     
 	struct ds_axidma_device *obj_dev;
 	unsigned short reallength = 0, extralength;
@@ -275,12 +277,19 @@ static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t 
 
 				// b = get_cyclecount();
 
+    // buffy = (char*) kmalloc( sizeof(int) * 2048, GFP_KERNEL );
+
+    // phybuffy = virt_to_phys(buffy);
+
+    // iowrite32(phybuffy, obj_dev->virt_bus_addr + MM2S_SOURCE_ADDRESS_REG);
+	// iowrite32(phybuffy, obj_dev->virt_bus_addr + S2MM_DESTINATION_ADDRESS);
+
     iowrite32(4097, obj_dev->virt_bus_addr + S2MM_DMA_CONTROL_REG);
 	iowrite32(4096, obj_dev->virt_bus_addr + S2MM_DMA_STATUS_REG);
     
 	iowrite32(1, obj_dev->virt_bus_addr + MM2S_DMA_CONTROL_REG);
 	
-
+    
     
     reallength = (buf[3] << 8) + buf[2];
 
@@ -291,6 +300,7 @@ static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t 
     {    
 	   // copy input buffer to coherent memory space
 	   memcpy(obj_dev->ds_axidma_addr, buf, reallength+60+4);
+	   //memcpy(buffy, buf, reallength+60+4);
 
 	   // Write length of data trasnfer to initiate transfer
 	   iowrite32(reallength+extralength+60, obj_dev->virt_bus_addr + MM2S_TRANSFER_LENGTH);
@@ -299,6 +309,7 @@ static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t 
     {
 	   // copy input buffer to coherent memory space
 	   memcpy(obj_dev->ds_axidma_addr, buf, reallength+28+4);
+	   //memcpy(buffy, buf, reallength+28+4);
 
 	   // Write length of data trasnfer to initiate transfer
 	   iowrite32(reallength+extralength+28, obj_dev->virt_bus_addr + MM2S_TRANSFER_LENGTH);
@@ -331,6 +342,7 @@ static ssize_t ds_axidma_write(struct file *f, const char __user * buf,  size_t 
 
 	// copy received buffer at ciherent memory space back to input buffer
 	memcpy((char __user*)buf, obj_dev->ds_axidma_addr, reallength+extralength+16);
+	//memcpy((char __user*)buf, buffy, reallength+extralength+16);
 
 
 			// 	g = get_cyclecount();
@@ -443,6 +455,9 @@ static int ds_axidma_pdrv_probe(struct platform_device *pdev)
 
 	obj_dev->ds_axidma_addr =
 	    dma_zalloc_coherent(NULL, DMA_LENGTH, &(obj_dev->ds_axidma_handle), GFP_KERNEL);
+
+    // obj_dev->ds_axidma_addr = (char*) kmalloc( DMA_LENGTH, GFP_KERNEL );
+    // obj_dev->ds_axidma_handle = virt_to_phys( obj_dev->ds_axidma_addr );
 
 
 	list_add( &obj_dev->dev_list, &full_dev_list );
