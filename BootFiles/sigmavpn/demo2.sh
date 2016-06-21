@@ -10,7 +10,7 @@ ifconfig eth1 mtu 1600
 
 echo "Configuring Public Interface"
 
-ifconfig eth0 192.168.1.140
+ifconfig eth0 10.3.0.11
 sleep 3
 ifconfig eth0 promisc
 
@@ -22,4 +22,4 @@ cp -r /mnt/sigmavpn/sigmavpn_installdir/* /usr/local/
 echo "Running SigmaVPN."
 echo ""
 
-/usr/local/bin/sigmavpn -c /mnt/sigmavpn/sigmavpn2_proto_raw.conf
+/usr/local/bin/sigmavpn -c /mnt/sigmavpn/demo2.conf
