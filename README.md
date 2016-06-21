@@ -4,7 +4,7 @@ This is a VPN Device design project using SigmaVPN application as the base VPN s
 
 A Virtual Private Network (VPN) encrypts and decrypts the private traffic it tunnels over a public network. Maximizing the available bandwidth is an important requirement for network applications, but the cryptographic operations add significant computational load to VPN applications, limiting the network throughput. This work presents a coprocessor designed to offer hardware acceleration for these encryption and decryption operations. The open-source SigmaVPN application is used as the base solution, and a coprocessor is designed for the parts of Networking and Cryptography library (NaCl) which underlies the cryptographic operation of SigmaVPN. The hardware-software codesign of this work is implemented on a Xilinx Zynq-7000 SoC, showing a 93% reduction in the execution time of encrypting a 1024-byte frame, and this improved the TCP and UDP communication bandwidths by a factor of 4.36 and 5.36 respectively for a 1024-byte frame compared to pure software solution.
 
-This wotk is completed as as Master Thesis project in KU Leuven - ESAT.
+This wotk is completed as a Master Thesis project in KU Leuven - ESAT.
 
 ## VPN device
 
@@ -20,8 +20,16 @@ The hardware acceleration is provided for NaCl's CryptoBox which underlies the c
 
 ### BootFiles
 
-This directory contains required files that you need to copy into a MicroSD card
-and run the ZYBO board with.
+This directory contains required files that you need to copy into a MicroSD card and run the ZYBO board with.
+
+After loading the ZYBO board, you should first install the SigmaVPN on it, then run it with a configuration file. Some example configuration files, and example scripts to run the application are provided under the directory `/sigmavpn`:
+
+For example, you should initialize it with demo1 configuration on one node, and  with demo2 configuration on the other node:
+
+```
+cd mnt/sigmavpn
+./demo1.sh
+```
 
 ### HW
 
