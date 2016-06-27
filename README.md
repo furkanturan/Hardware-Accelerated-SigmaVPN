@@ -4,11 +4,11 @@ This is a VPN Device design project using SigmaVPN application as the base VPN s
 
 A Virtual Private Network (VPN) encrypts and decrypts the private traffic it tunnels over a public network. Maximizing the available bandwidth is an important requirement for network applications, but the cryptographic operations add significant computational load to VPN applications, limiting the network throughput. This work presents a coprocessor designed to offer hardware acceleration for these encryption and decryption operations. The open-source SigmaVPN application is used as the base solution, and a coprocessor is designed for the parts of Networking and Cryptography library (NaCl) which underlies the cryptographic operation of SigmaVPN. The hardware-software codesign of this work is implemented on a Xilinx Zynq-7000 SoC, showing a 93% reduction in the execution time of encrypting a 1024-byte frame, and this improved the TCP and UDP communication bandwidths by a factor of 4.36 and 5.36 respectively for a 1024-byte frame compared to pure software solution.
 
-This wotk is completed as a Master Thesis project in KU Leuven - ESAT.
+This work is completed as a Master Thesis project in KU Leuven - ESAT / COSIC.
 
 ## VPN device
 
-The device is created on Zynq SoC. The Zynq consists of both Processing System (PS) and Programmable Logic (PL). PS refers to dual ARM Cortex-A0 cores, on which Linux and SigmaVPN run, and PL refers to FPGA on which the hardware acceleration for the cryptographic operations are implemented.
+The device is implemented on Zynq SoC. The Zynq consists of both Processing System (PS) and Programmable Logic (PL). PS refers to dual ARM Cortex-A0 cores, on which Linux and SigmaVPN run, and PL refers to FPGA on which the hardware acceleration for the cryptographic operations are implemented.
 
 The device is configured to operate with two ports which are named as public and private ports. Private port listens every packet arriving the device i.e. all TCP, UDP, DHCP, ARP, ... All specific or broadcast messages received by the private port are encrypted and transmitted to a destination device over public port. The prive port is obtained by creating a new network interface module that promiscuously reads Ethernet frames using libpcap packet sniffing library.
 
@@ -57,13 +57,11 @@ You can use this tutorial to learn how to compile Linux and play with ZYBO board
 
 ### SigmaVPN
 
-This folder has a fork of original SigmaVPN code. In this fork two new modules are offered. The first one for physical communication feature instead of using virtual network interface, and the other is to utilize designed cryptographic coprocessor. 
+This folder has a fork of original SigmaVPN code, as a sub-repository. In this fork, the change of SigmaVPN is made to provide it two-port operation capability at first, and to make it utilize the coprocessor. For each feature, two new modules to the SigmaVPN are offered. The first one for physical communication feature instead of using virtual network interface, and the other is to utilize designed cryptographic coprocessor. 
 
-### SigmaVPN_deps
+Running the SigmaVPN requires libsodium, and libpcap libraries. The former is for NaCl and the latter is for two-port operation. 
 
-Running the SigmaVPN requires libsodium, and libpcap libraries. The folder is used to store the compiled libraries. Note that while saying compile, the intention is to mean cross-compile, since the SigmaVPN is run on the ZYBO board,and compilation is done on PC. 
-
-In this repository, compiled versions of them are not provided, but a readme file described how they had been cross-compiled is given.
+The readme file in the directory describes how to cross-compule these libraries and SigmaVPN for the ZYBO board. 
 
 ### TestApp / TestApp_UserSpace
 
