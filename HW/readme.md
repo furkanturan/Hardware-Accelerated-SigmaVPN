@@ -6,6 +6,8 @@ Note that the IP cores does not implement the NaCl CryptoBox completely. The Cry
 
 Namely, the `crypto_box_beforenm` function mentioned in the NaCl's [documentation](https://nacl.cr.yp.to/box.html) is exempted in hardware implementation, byt `crypto_box_afternm` and `crypto_box_open_afternm` are implemented.
 
+As you study the input and output data structures, you should notice that for decryption operation received MAC is not provided as an input but output contains the calculated MAC. That is a design decision to decrease the total execution time, and reduce resource consumption as it is descibed in Master Thesis text in the documentation folder. The verification of the MAC is left as a task for software. In the decryption case, the software invokes the coprocessor, received its output, and when receiving the output compare the received MAC with the calculated one. Only if the two are same, it uses the decrypted message.
+
 The zybo_bsd folders contains the base system design that consists of the design used for creating the VPN Device with connections of PS, DMA, and the NaCl CryptoBox Croprocessor.
 
 ## NACL CryptoBox Coprocessor
@@ -44,3 +46,11 @@ The input data buffer from PS to the coprocessor has following fields in the fol
 **L1KEY** - A 32-byte session key generated using the from public and private key pairs by calling the `crypto_box_beforenm` function of the NaCl CryptoBox in software.
 
 **MESSAGE** - The field to store the input message to the coprocessor.
+
+### The Stucture of the Output Data Buffer
+
+As the encryption or decryption operation is processed the outputs will be pushed to the RAM for the software in PS. 
+
+In encryption case the output data will consist of the ciphertext followed by a 16-byte MAC.
+
+In the decyption case the output data will consist of the plaintext followed by a 16-byte MAC.  
