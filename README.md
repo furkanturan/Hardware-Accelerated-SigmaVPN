@@ -16,20 +16,50 @@ In that scheme, all messages arriving to private sides of both VPN devices are f
 
 The hardware acceleration is provided for NaCl's CryptoBox which underlies the cryptographic operations of the SigmaVPN. With a new module introduced to the SigmaVPN, it is possible to utilize the NaCl CryptoBox coprocessor hardware implemented in the hardware through provided device driver.
 
-## Explanation of Directories
+## How to Use It
 
-### BootFiles
+To use the design on a ZYBO board, you should prepare the BootFiles (or use the one provided, and jump to step 11).
 
-This directory contains required files that you need to copy into a MicroSD card and run the ZYBO board with.
+A [tutorial](http://www.instructables.com/id/Embedded-Linux-Tutorial-Zybo/?ALLSTEPS) showing the steps are given provided by Digilent and can offer a great help.
 
-After loading the ZYBO board, you should first install the SigmaVPN on it, then run it with a configuration file. Some example configuration files, and example scripts to run the application are provided under the directory `/sigmavpn`:
+Step 1: Implement the design on Vivado, and create bitstream.
 
-For example, you should initialize it with demo1 configuration on one node, and  with demo2 configuration on the other node:
+Step 2: Make UImage (Use [U-boot](https://github.com/DigilentInc/u-boot-Digilent-Dev) by Digilent)
+
+Step 3: Generate U-boot.elf
+
+Step 4: Build the first stage boot loader from the bitstream, a more explanatory tutorial for that is [here](http://www.dbrss.org/zybo/tutorial4.html) (Replace the default `fsbl_hooks.c` file with the provided one.)
+
+Step 5: Provide a USB-to-Ethernet Adapter for the second Ethernet port of the VPN Device. We used [Edimax EU-4306 USB 3.0 Gigabit Ethernet Adapter](http://www.edimax.com/edimax/merchandise/merchandise_detail/data/edimax/au/network_adapters_usb_adapters/eu-4306/) 
+
+Step 6: Cross-Compile Linux Kernel (with the drivers enabled for adapter)
+
+Step 7: Make Uramdisk
+
+Step 8: Generate DTB file (study the provided one for accessing the DMA using its physical address mapped to the PS.
+ 
+Step 9: Cross-Compile SigmaVPN.
+
+Step 10: Copy the output files to MicroSD card
+
+Step 11: Boot the ZYBO board from SD Card.
+
+Step 12: Install the SigmaVPN on it.
+
+Step 13: Initialize the SigmaVPN application. 
+
+Sample initialization scripts (installing, and running the SigmaVPN) together with configuration files are provided in BootFiles directory. For example, you should initialize it with demo1 configuration on one node, and  with demo2 configuration on the other node:
 
 ```
 cd mnt/sigmavpn
 ./demo1.sh
 ```
+
+## Explanation of Directories
+
+### BootFiles
+
+This directory contains required files that you need to copy into a MicroSD card and run the ZYBO board with.
 
 ### HW
 
