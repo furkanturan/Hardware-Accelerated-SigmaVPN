@@ -1,6 +1,8 @@
 # Hardware Design of the Project
 
-This directory includes the two IP Cores designed to implement the encryption and decryption operations of the NaCl's CryptoBox. One implementation has double instantiation of the Salsa20 and Poly1305 hardware modules to be able to process double length the input in a unit time.
+This directory includes the two *NaCl CryptoBox IP Cores*, and *base system design*. The IP Cores are designed to implement the encryption and decryption operations of the NaCl's CryptoBox. One implementation has double instantiation of the Salsa20 and Poly1305 hardware modules to be able to process double length the input in a unit time.
+
+To build the IP Cores you can use the *.tcl* files provided in the sub-folder, and the base system design will provide you the design made for Zybo by means of settings, configurations, and connections between the PS, DMA and the NaCl CryptoBox Croprocessor.
 
 Note that the IP cores does not implement the NaCl CryptoBox completely. The CryptoBox is often used in a way that its session key derivation, and encryption operations are separated. This HW implementations follows this method, and implements the encryption and decryption functions, excluding the session key derivation parts. 
 
@@ -12,7 +14,7 @@ The zybo_bsd folders contains the base system design that consists of the design
 
 ## NACL CryptoBox Coprocessor
 
-The Coprocessor is designed as an IP Cores with three AXI Ports:
+The Coprocessor is designed as an IP Core with three AXI Ports:
 ```
          ___Coprocessor_IP___
         |                    |
@@ -23,7 +25,7 @@ The Coprocessor is designed as an IP Cores with three AXI Ports:
         | < S_AXIS           |
         |____________________|
 ```
-The operation starts with a DMA transfer from PS to NaCl Coprocessor through its S_AXIS port. The transfer should send the input data to the coprocessor that has the message to be encrypted togeter with the operation specific metadata, e.g., a command, message length, nonce. The strucutre of the input data will be discussed below in detail. As the coprocessor receives the data buffer, it immediately starts executing the operation.
+The IP Core's execution starts with a DMA transfer from PS to NaCl Coprocessor through its S_AXIS port. The transfer should send the input data to the coprocessor that has the message to be encrypted togeter with the operation specific metadata, e.g., a command, message length, nonce. The strucutre of the input data will be discussed below in detail. As the coprocessor receives the data buffer, it immediately starts executing the operation.
 
 To transfer the results back to the PS, it configures the DMA from using its M_AXI_LITE port, and offers the output data to the PS using M_AXIS port.
 
