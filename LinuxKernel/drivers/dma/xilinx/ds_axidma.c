@@ -1,7 +1,12 @@
 /*
  * Xilinx AXI DMA Driver
  *
- * Authors:
+ * Modified driver for the Hardware Accelerated SigmaVPN project.
+ * Modified by:
+ *    Furkan Turan
+ *    KU Leuven 
+ *
+ * The original authors are:
  *    Fabrizio Spada - fabrizio.spada@mail.polimi.it
  *    Gianluca Durelli - durelli@elet.polimi.it
  *    Politecnico di Milano
@@ -543,7 +548,7 @@ static struct platform_driver ds_axidma_pdrv = {
 
 module_platform_driver(ds_axidma_pdrv);
 
-MODULE_AUTHOR("Fabrizio Spada, Gianluca Durelli");
+MODULE_AUTHOR("Furkan Turan");
 MODULE_DESCRIPTION("AXI DMA driver");
 MODULE_LICENSE("GPL v2");
 
